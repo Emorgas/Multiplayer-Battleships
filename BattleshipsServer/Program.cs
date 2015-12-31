@@ -16,6 +16,11 @@ namespace BattleshipsServer
         private BackgroundWorker bgListener;
         //Client Data
         private List<ServerClient> clientList;
+
+        //Saved for next session
+        //http://www.fluxbytes.com/csharp/how-to-create-and-connect-to-an-sqlite-database-in-c/
+        //http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
+
         //Game Data
         private List<BattleshipsGame> activeGames;
 

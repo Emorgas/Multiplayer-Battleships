@@ -30,6 +30,8 @@ namespace BattleshipsClient
             this.client.CommandRecieved += new CommandRecievedEventHandler(CommandRecieved);
             this.client.ConnectionLost += new ServerConnectionLostEventHandler(ConnectionLost);
             this.client.RequestClientList();
+            lblWins.Text = "Your Wins: " + this.client.Wins;
+            lblLosses.Text = "Your Losses: " + this.client.Losses;
         }
 
         private void CommandRecieved(object sender, CommandEventArgs e)
@@ -91,7 +93,11 @@ namespace BattleshipsClient
             {
                 if (activeChallenge == false)
                 {
-                    DialogResult dr = MessageBox.Show(e.Command.SenderName + " has challenged you! Do You accept?", "You have been challenged!", MessageBoxButtons.YesNo);
+                    int index = FindClientByUsername(e.Command.SenderName);
+                    DialogResult dr = MessageBox.Show(e.Command.SenderName + " has challenged you!" + Environment.NewLine 
+                        + "Wins: " + int.Parse(clientList[index].Split(':')[3]) + Environment.NewLine
+                        + "Losses: " + int.Parse(clientList[index].Split(':')[4]) + Environment.NewLine
+                        + "Do You accept?", "You have been challenged!", MessageBoxButtons.YesNo);
                     if (dr == DialogResult.Yes)
                     {
                         activeChallenge = true;
@@ -162,6 +168,8 @@ namespace BattleshipsClient
         {
             activeChallenge = false;
             activeGameID = -1;
+            lblWins.Text = "Your Wins: " + client.Wins;
+            lblLosses.Text = "Your Losses: " + client.Losses;
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -185,6 +193,8 @@ namespace BattleshipsClient
             {
                 int itemIndex = lstUsers.SelectedIndex;
                 string username = lstUsers.Items[itemIndex].ToString();
+                int wins = -1;
+                int losses = -1;
                 if (username != client.Username)
                 {
                     IPAddress targetIP;
@@ -200,15 +210,25 @@ namespace BattleshipsClient
                     {
                         targetIP = IPAddress.Parse(clientList[index].Split(':')[0]);
                         targetPort = int.Parse(clientList[index].Split(':')[1]);
+                        wins = int.Parse(clientList[index].Split(':')[3]);
+                        losses = int.Parse(clientList[index].Split(':')[4]);
                     }
-                    Command cmd = new Command(CommandType.ChallengeRequest, targetIP);
-                    cmd.TargetPort = targetPort;
-                    cmd.SenderName = client.Username;
-                    cmd.SenderIP = client.IP;
-                    cmd.SenderPort = client.Port;
-                    client.SendCommand(cmd);
-                    activeChallenge = true;
-                    rtbChat.AppendText("Challenge request sent to " + username + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
+                    DialogResult dr = MessageBox.Show(username + Environment.NewLine + "Wins: " + wins + Environment.NewLine + "Losses: " + losses + Environment.NewLine + "Challenge this user?", "Challenge a User", MessageBoxButtons.YesNo);
+                    if (dr == DialogResult.Yes)
+                    {
+                        Command cmd = new Command(CommandType.ChallengeRequest, targetIP);
+                        cmd.TargetPort = targetPort;
+                        cmd.SenderName = client.Username;
+                        cmd.SenderIP = client.IP;
+                        cmd.SenderPort = client.Port;
+                        client.SendCommand(cmd);
+                        activeChallenge = true;
+                        rtbChat.AppendText("Challenge request sent to " + username + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
+                    }
+                    else
+                    {
+                        rtbChat.AppendText("Challenge aborted." + Environment.NewLine);
+                    }
                 }
             }
         }

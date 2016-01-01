@@ -56,6 +56,12 @@ namespace BattleshipsServer
         List<GridPosition> client2TempPositions;
         int gameOverMessageCount = 0;
 
+        public ServerClient[] Clients
+        {
+            get { return clients; }
+        }
+
+
         public int GameOverMessageCount
         {
             get { return gameOverMessageCount; }
@@ -130,23 +136,27 @@ namespace BattleshipsServer
                     }
                     SendCommandToClient(cmd2);
 
-                    //Check is any ships remain in each board, if a board has no sips remaining then the game is over and that client loses
+                    //Check is any ships remain in each board, if a board has no ships remaining then the game is over and that client loses
                     if (client1Board.AreShipsRemaining() == false)
                     {
                         Command winCmd = new Command(CommandType.GameOverInform, clients[1].IP, "win");
                         winCmd.TargetPort = clients[1].Port;
+                        clients[1].Wins++;
                         SendCommandToClient(winCmd);
                         Command lossCmd = new Command(CommandType.GameOverInform, clients[0].IP, "loss");
                         lossCmd.TargetPort = clients[0].Port;
+                        clients[0].Losses++;
                         SendCommandToClient(lossCmd);
                     }
                     else if (client2Board.AreShipsRemaining() == false)
                     {
                         Command winCmd = new Command(CommandType.GameOverInform, clients[0].IP, "win");
                         winCmd.TargetPort = clients[0].Port;
+                        clients[0].Wins++;
                         SendCommandToClient(winCmd);
                         Command lossCmd = new Command(CommandType.GameOverInform, clients[1].IP, "loss");
                         lossCmd.TargetPort = clients[1].Port;
+                        clients[1].Losses++;
                         SendCommandToClient(lossCmd);
                     }
                 }

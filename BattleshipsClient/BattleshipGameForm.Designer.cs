@@ -628,7 +628,7 @@
             this.btnSubmit.Location = new System.Drawing.Point(495, 318);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(75, 23);
-            this.btnSubmit.TabIndex = 8;
+            this.btnSubmit.TabIndex = 14;
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
@@ -688,7 +688,7 @@
             this.btnReset.Location = new System.Drawing.Point(414, 318);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 14;
+            this.btnReset.TabIndex = 15;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
@@ -699,7 +699,7 @@
             this.btnFire.Location = new System.Drawing.Point(62, 318);
             this.btnFire.Name = "btnFire";
             this.btnFire.Size = new System.Drawing.Size(467, 23);
-            this.btnFire.TabIndex = 15;
+            this.btnFire.TabIndex = 16;
             this.btnFire.Text = "Fire!";
             this.btnFire.UseVisualStyleBackColor = true;
             this.btnFire.Visible = false;

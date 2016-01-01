@@ -46,7 +46,7 @@ namespace BattleshipsClient
                 {
                     myTurn = true;
                     rtbLog.AppendText("It is your turn to shoot first, please select a position within enemy waters" + Environment.NewLine);
-                    btnFire.Enabled = true;
+                    //btnFire.Enabled = true;
                 }
                 else if (e.Command.Data.ToLower() == "false")
                 {
@@ -64,6 +64,7 @@ namespace BattleshipsClient
                     rtbLog.AppendText("Your shot hit!" + Environment.NewLine);
                     pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
                     pictureBox.Image = Properties.Resources.ShipHit;
+                    pictureBox.Tag = "ShipHit";
                     btnFire.Enabled = false;
                     myTurn = false;
                     rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine);
@@ -75,6 +76,7 @@ namespace BattleshipsClient
                     rtbLog.AppendText("Your shot missed!" + Environment.NewLine);
                     pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
                     pictureBox.Image = Properties.Resources.WaterMiss;
+                    pictureBox.Tag = "WaterMiss";
                     btnFire.Enabled = false;
                     myTurn = false;
                     rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine);
@@ -87,7 +89,6 @@ namespace BattleshipsClient
                 gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
                 pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
                 pictureBox.Image = Properties.Resources.ShipHit;
-                btnFire.Enabled = true;
                 myTurn = true;
                 rtbLog.AppendText("It is your turn to shoot." + Environment.NewLine);
 
@@ -99,7 +100,6 @@ namespace BattleshipsClient
                 gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
                 pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
                 pictureBox.Image = Properties.Resources.WaterMiss;
-                btnFire.Enabled = true;
                 myTurn = true;
                 rtbLog.AppendText("It is your turn to shoot." + Environment.NewLine);
             }
@@ -147,6 +147,7 @@ namespace BattleshipsClient
                     pictureBox.Dock = DockStyle.Fill;
                     pictureBox.Image = Properties.Resources.Water;
                     pictureBox.Margin = new Padding(0);
+                    pictureBox.Tag = "Water";
                     grid.Controls.Add(pictureBox, c, r);
                 }
             }
@@ -160,6 +161,7 @@ namespace BattleshipsClient
                 {
                     pictureBox = (PictureBox)grid.GetControlFromPosition(c, r);
                     pictureBox.Image = Properties.Resources.Water;
+                    pictureBox.Tag = "Water";
                 }
             }
         }
@@ -184,9 +186,31 @@ namespace BattleshipsClient
             if (myTurn)
             {
                 Control control = (Control)sender;
+                if (gridTarget.x > -1 && gridTarget.y > -1)
+                {
+                    if (pictureBox != null)
+                    {
+                        if (pictureBox.Tag.ToString() == "WaterTarget")
+                        {
+                            pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
+                            pictureBox.Image = Properties.Resources.Water;
+                            pictureBox.Tag = "Water";
+                        }
+                    }
+                }
                 gridTarget = new GridPosition(EnemyGrid.GetPositionFromControl(control).Column, EnemyGrid.GetPositionFromControl(control).Row);
                 pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
-                pictureBox.Image = Properties.Resources.WaterTarget;
+                if (pictureBox.Tag.ToString() == "Water")
+                {
+                    pictureBox.Image = Properties.Resources.WaterTarget;
+                    pictureBox.Tag = "WaterTarget";
+                    btnFire.Enabled = true;
+                }
+                else
+                {
+                    btnFire.Enabled = false;
+                }
+
             }
         }
 
@@ -666,19 +690,25 @@ namespace BattleshipsClient
             //Carrier
             btnCarrier.Enabled = false;
             btnCarrier.Visible = false;
+            //Reset Button
+            btnReset.Enabled = false;
+            btnReset.Visible = false;
             //Fire Button
             btnFire.Visible = true;
         }
 
         private void btnFire_Click(object sender, EventArgs e)
         {
-            Command cmd = new Command(CommandType.GameShotRequest, client.ServerIP, gameID + ":" + gridTarget.x + "," + gridTarget.y);
-            cmd.TargetPort = client.ServerPort;
-            cmd.SenderIP = client.IP;
-            cmd.SenderName = client.Username;
-            cmd.SenderPort = client.Port;
-            client.SendCommand(cmd);
-            rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine);
+            if (gridTarget.x > -1 && gridTarget.y > -1)
+            {
+                Command cmd = new Command(CommandType.GameShotRequest, client.ServerIP, gameID + ":" + gridTarget.x + "," + gridTarget.y);
+                cmd.TargetPort = client.ServerPort;
+                cmd.SenderIP = client.IP;
+                cmd.SenderName = client.Username;
+                cmd.SenderPort = client.Port;
+                client.SendCommand(cmd);
+                rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine);
+            }
         }
 
         private void BattleshipGameForm_FormClosing(object sender, FormClosingEventArgs e)

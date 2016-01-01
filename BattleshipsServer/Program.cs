@@ -16,11 +16,7 @@ namespace BattleshipsServer
         private BackgroundWorker bgListener;
         //Client Data
         private List<ServerClient> clientList;
-
-        //Saved for next session
-        //http://www.fluxbytes.com/csharp/how-to-create-and-connect-to-an-sqlite-database-in-c/
-        //http://www.dreamincode.net/forums/topic/157830-using-sqlite-with-c%23/
-
+        SQLiteDatabase dataBase;
         //Game Data
         private List<BattleshipsGame> activeGames;
 
@@ -46,6 +42,13 @@ namespace BattleshipsServer
                 prog.serverPort = int.Parse(args[1]);
             }
 
+            prog.dataBase = new SQLiteDatabase();
+            if (!System.IO.File.Exists("clientData.s3db"))
+            {
+                string createTableQuery = @"CREATE TABLE IF NOT EXISTS [Users] ([Username] TEXT NOT NULL PRIMARY KEY, [Wins] INTEGER NOT NULL, [Losses] INTEGER NOT NULL)";
+                System.Data.SQLite.SQLiteConnection.CreateFile("clientData.s3db");
+                prog.dataBase.ExecuteNonQuery(createTableQuery);
+            }
             prog.bgListener = new BackgroundWorker();
             prog.bgListener.WorkerSupportsCancellation = true;
             prog.bgListener.DoWork += new DoWorkEventHandler(prog.Listen);
@@ -100,18 +103,69 @@ namespace BattleshipsServer
             Console.WriteLine("User connected from {0}:{1} at {2}/{3}", newClient.IP, newClient.Port, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
         }
 
+        private string CheckForClientData(string username)
+        {
+            string query = string.Format("SELECT COUNT(*) FROM Users WHERE Username = '{0}'", username);
+            string retrievedData = "";
+            int count = -1;
+            try
+            {
+                count = int.Parse(dataBase.GetSingleEntry(query));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                count = 0;
+            }
+            if (count == 1)
+            {
+                //Check to see if data exists for this username in the database. If it does return the wins/losses to be stored in the ServerClient class
+                //Get wins
+                query = string.Format("SELECT Wins FROM Users WHERE Username = '{0}';", username);
+                retrievedData = dataBase.GetSingleEntry(query);
+                retrievedData += ":";
+                //Get Losses
+                query = string.Format("SELECT Losses FROM Users WHERE Username = '{0}';", username);
+                retrievedData += dataBase.GetSingleEntry(query);
+                return retrievedData;
+            }
+            else if (count == 0)
+            {
+                //If no data exists for user, create default data
+                Dictionary<string, string> data = new Dictionary<string, string>();
+                data.Add("USERNAME", username);
+                data.Add("WINS", "0");
+                data.Add("LOSSES", "0");
+                try
+                {
+                    dataBase.Insert("USERS", data);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                retrievedData = "0:0";
+            }
+            return retrievedData;
+        }
+
         private void CommandRecieved(object sender, CommandEventArgs e)
         {
             //When a user connects set their client username
-            if (e.Command.CommandType == CommandType.UserConnected)
+            if (e.Command.CommandType == CommandUtils.CommandType.UserConnected)
             {
                 string username = e.Command.Data.Split(':')[2];
                 Console.WriteLine("Checking for : " + username);
                 bool nameAvailability = CheckUsernameAvailability(e.Command.SenderIP, e.Command.SenderPort, username);
                 if (nameAvailability)
                 {
+                    string data = CheckForClientData(username);
+
                     SetClientUsername(e.Command.SenderIP, e.Command.SenderPort, username);
+                    SetClientData(e.Command.SenderIP, e.Command.SenderPort, data);
+                    SendUserStats(e.Command.SenderIP, e.Command.SenderPort, data);
                     AnswerUsernameRequest(e.Command.SenderIP, e.Command.SenderPort, nameAvailability);
+                    e.Command.Data += (":" + data);
                     SendCommandToAll(e.Command);
                 }
                 else if (nameAvailability == false)
@@ -122,14 +176,14 @@ namespace BattleshipsServer
             }
 
             //User asks to disconnect
-            if (e.Command.CommandType == CommandType.UserDisconnectRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.UserDisconnectRequest)
             {
                 int index = FindClientID(e.Command.SenderIP, e.Command.SenderPort);
                 string clientDetails = clientList[index].IP.ToString() + ":" + clientList[index].Port.ToString() + ":" + clientList[index].Username;
                 Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", e.Command.SenderIP, e.Command.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
                 clientList[index].Disconnect();
                 clientList.RemoveAt(index);
-                Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+                Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
                 cmd.SenderName = e.Command.SenderName;
                 cmd.SenderIP = e.Command.SenderIP;
                 cmd.SenderPort = e.Command.SenderPort;
@@ -139,13 +193,13 @@ namespace BattleshipsServer
             }
 
             //Reply to client list request
-            if (e.Command.CommandType == CommandType.ClientListRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.ClientListRequest)
             {
                 SendClientList(e.Command.SenderIP, e.Command.SenderPort);
             }
 
             //Sends message commands to all connected clients
-            if (e.Command.CommandType == CommandType.Message)
+            if (e.Command.CommandType == CommandUtils.CommandType.Message)
             {
                 if (e.Command.TargetIP.Equals(IPAddress.Broadcast))
                 {
@@ -158,19 +212,19 @@ namespace BattleshipsServer
             }
 
             //Pass challenge request to challenged user
-            if (e.Command.CommandType == CommandType.ChallengeRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.ChallengeRequest)
             {
                 SendCommandToClient(e.Command);
             }
-            
+
             //Pass challenge response to challenger
-            if (e.Command.CommandType == CommandType.ChallengeResponse)
+            if (e.Command.CommandType == CommandUtils.CommandType.ChallengeResponse)
             {
                 SendCommandToClient(e.Command);
             }
 
             //Handle game start request
-            if (e.Command.CommandType == CommandType.GameStartRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.GameStartRequest)
             {
                 IPAddress client2IP = IPAddress.Parse(e.Command.Data.Split(':')[0]);
                 int client2Port = int.Parse(e.Command.Data.Split(':')[1]);
@@ -178,7 +232,7 @@ namespace BattleshipsServer
                 int client2ID = FindClientID(client2IP, client2Port);
                 BattleshipsGame game = new BattleshipsGame(clientList[client1ID], clientList[client2ID]);
 
-                Command cmd = new Command(CommandType.GameIDInform, e.Command.SenderIP, activeGames.Count.ToString());
+                Command cmd = new Command(CommandUtils.CommandType.GameIDInform, e.Command.SenderIP, activeGames.Count.ToString());
                 cmd.SenderName = "server";
                 cmd.SenderIP = serverIP;
                 cmd.SenderPort = serverPort;
@@ -193,24 +247,44 @@ namespace BattleshipsServer
             }
 
             //Handle ShipPlacementRequest
-            if (e.Command.CommandType == CommandType.GameShipRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.GameShipRequest)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].CommandRecieved(e);
             }
             //Handle GameShotRequest
-            if (e.Command.CommandType == CommandType.GameShotRequest)
+            if (e.Command.CommandType == CommandUtils.CommandType.GameShotRequest)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].CommandRecieved(e);
             }
             //Handle GameOverInform
-            if (e.Command.CommandType == CommandType.GameOverInform)
+            if (e.Command.CommandType == CommandUtils.CommandType.GameOverInform)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].GameOverMessageCount++;
                 if (activeGames[int.Parse(e.Command.Data.Split(':')[0])].GameOverMessageCount >= 2)
                 {
+                    PostGameStatisticsUpdate(activeGames[int.Parse(e.Command.Data.Split(':')[0])].Clients);
                     activeGames.RemoveAt(int.Parse(e.Command.Data.Split(':')[0]));
                     GC.Collect();
                 }
+            }
+        }
+
+        private void PostGameStatisticsUpdate(ServerClient[] clients)
+        {
+            for (int i = 0; i < clients.Length; i++)
+            {
+                Dictionary<string, string> data = new Dictionary<string, string>();
+                data.Add("WINS", clients[i].Wins.ToString());
+                data.Add("LOSSES", clients[i].Losses.ToString());
+                try
+                {
+                    dataBase.Update("USERS", data, string.Format("USERNAME = {0}", clients[i].Username));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Data Update Failed: " + e.Message);
+                }
+
             }
         }
 
@@ -221,7 +295,7 @@ namespace BattleshipsServer
             Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", dcCmd.SenderIP, dcCmd.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
             clientList[index].Disconnect();
             clientList.RemoveAt(index);
-            Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+            Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
             cmd.SenderName = dcCmd.SenderName;
             cmd.SenderIP = dcCmd.SenderIP;
             cmd.SenderPort = dcCmd.SenderPort;
@@ -240,11 +314,11 @@ namespace BattleshipsServer
             string clientDetails = "";
             foreach (ServerClient client in this.clientList)
             {
-                clientDetails = client.IP.ToString() + ':' + client.Port.ToString() + ':' + client.Username + ',';
+                clientDetails = client.IP.ToString() + ':' + client.Port.ToString() + ':' + client.Username + ':' + client.Wins.ToString() + ':' + client.Losses.ToString() + ',';
                 clientList += clientDetails;
             }
             Console.WriteLine("Send Client list info to: " + targetIP + ':' + targetPort);
-            Command cmd = new Command(CommandType.ClientListRequest, targetIP);
+            Command cmd = new Command(CommandUtils.CommandType.ClientListRequest, targetIP);
             cmd.TargetPort = targetPort;
             cmd.Data = clientList;
             cmd.SenderIP = serverIP;
@@ -267,12 +341,22 @@ namespace BattleshipsServer
 
         private void AnswerUsernameRequest(IPAddress targetIP, int targetPort, bool usernameAvailiability)
         {
-            Command cmd = new Command(CommandType.UsernameRequest, targetIP, usernameAvailiability.ToString());
+            Command cmd = new Command(CommandUtils.CommandType.UsernameRequest, targetIP, usernameAvailiability.ToString());
             cmd.TargetPort = targetPort;
             cmd.SenderIP = serverIP;
             cmd.SenderPort = serverPort;
             cmd.SenderName = "Server";
             Console.WriteLine("Username Response Sent to {0}:{1} Value: {2}", targetIP.ToString(), targetPort.ToString(), usernameAvailiability.ToString());
+            SendCommandToClient(cmd);
+        }
+
+        private void SendUserStats(IPAddress targetIP, int targetPort, string data)
+        {
+            Command cmd = new Command(CommandType.UserDataInform, targetIP, data);
+            cmd.TargetPort = targetPort;
+            cmd.SenderIP = serverIP;
+            cmd.SenderPort = serverPort;
+            cmd.SenderName = "server";
             SendCommandToClient(cmd);
         }
 
@@ -286,6 +370,18 @@ namespace BattleshipsServer
             }
         }
 
+        private void SetClientData(IPAddress ip, int port, string data)
+        {
+            int index = FindClientID(ip, port);
+            if (index != -1)
+            {
+                int wins = int.Parse(data.Split(':')[0]);
+                int losses = int.Parse(data.Split(':')[1]);
+                clientList[index].Wins = wins;
+                clientList[index].Losses = losses;
+            }
+        }
+
         private bool RemoveClientFromList(IPAddress ip, int port)
         {
             lock (this)
@@ -296,7 +392,7 @@ namespace BattleshipsServer
                     string clientName = clientList[index].Username;
                     clientList.RemoveAt(index);
 
-                    Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+                    Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
                     cmd.SenderName = clientName;
                     cmd.SenderIP = ip;
                     cmd.SenderPort = port;

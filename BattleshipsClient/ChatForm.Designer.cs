@@ -36,6 +36,8 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblWins = new System.Windows.Forms.Label();
+            this.lblLosses = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,11 +82,11 @@
             // 
             // rtbChat
             // 
-            this.rtbChat.Location = new System.Drawing.Point(9, 35);
+            this.rtbChat.Location = new System.Drawing.Point(9, 39);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(2);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
-            this.rtbChat.Size = new System.Drawing.Size(356, 329);
+            this.rtbChat.Size = new System.Drawing.Size(356, 325);
             this.rtbChat.TabIndex = 4;
             this.rtbChat.Text = "";
             // 
@@ -124,11 +126,31 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Connected Users";
             // 
+            // lblWins
+            // 
+            this.lblWins.AutoSize = true;
+            this.lblWins.Location = new System.Drawing.Point(12, 24);
+            this.lblWins.Name = "lblWins";
+            this.lblWins.Size = new System.Drawing.Size(68, 13);
+            this.lblWins.TabIndex = 7;
+            this.lblWins.Text = "Your Wins: 0";
+            // 
+            // lblLosses
+            // 
+            this.lblLosses.AutoSize = true;
+            this.lblLosses.Location = new System.Drawing.Point(143, 24);
+            this.lblLosses.Name = "lblLosses";
+            this.lblLosses.Size = new System.Drawing.Size(77, 13);
+            this.lblLosses.TabIndex = 8;
+            this.lblLosses.Text = "Your Losses: 0";
+            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(467, 409);
+            this.Controls.Add(this.lblLosses);
+            this.Controls.Add(this.lblWins);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rtbChat);
             this.Controls.Add(this.lstUsers);
@@ -162,5 +184,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblWins;
+        private System.Windows.Forms.Label lblLosses;
     }
 }

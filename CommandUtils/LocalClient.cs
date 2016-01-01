@@ -20,7 +20,9 @@ namespace CommandUtils
         private BackgroundWorker bgReciever;
         private string username;
         private IPEndPoint serverAddress;
-
+        private bool signingOut = false;
+        private int wins = -1;
+        private int losses = -1;
         public IPAddress IP
         {
             get
@@ -86,6 +88,18 @@ namespace CommandUtils
                     return -1;
                 }
             }
+        }
+
+        public int Wins
+        {
+            get { return wins; }
+            set { wins = value; }
+        }
+
+        public int Losses
+        {
+            get { return losses; }
+            set { losses = value; }
         }
 
         public LocalClient(IPEndPoint server, string username)
@@ -197,8 +211,12 @@ namespace CommandUtils
             }
             catch (Exception ex)
             {
-                Disconnect();
-                OnConnectionLost(new EventArgs());
+                Console.WriteLine(ex.Message);
+                if (signingOut == false)
+                {
+                    Disconnect();
+                    OnConnectionLost(new EventArgs());
+                }
             }
         }
 
@@ -235,6 +253,7 @@ namespace CommandUtils
             cmd.SenderName = Username;
             cmd.SenderPort = Port;
             SendCommand(cmd);
+            signingOut = true;
         }
 
         public bool Disconnect()

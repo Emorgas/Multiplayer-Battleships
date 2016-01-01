@@ -19,6 +19,11 @@ namespace BattleshipsClient
 
         private void CommandRecieved(object sender, CommandEventArgs e)
         {
+            if (e.Command.CommandType == CommandType.UserDataInform)
+            {
+                client.Wins = int.Parse(e.Command.Data.Split(':')[0]);
+                client.Losses = int.Parse(e.Command.Data.Split(':')[1]);
+            }
             if (e.Command.CommandType == CommandType.UsernameRequest)
             {
                 if (e.Command.Data.ToLower() == "false")

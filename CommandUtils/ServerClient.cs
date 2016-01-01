@@ -16,6 +16,8 @@ namespace CommandUtils
         //Client Variables
         private Socket socket;
         private string clientUsername;
+        private int wins;
+        private int losses;
         private NetworkStream networkStream;
         private BinaryFormatter formatter;
         private BackgroundWorker bgReciever;
@@ -54,6 +56,18 @@ namespace CommandUtils
         {
             get { return clientUsername; }
             set { clientUsername = value; }
+        }
+
+        public int Wins
+        {
+            get { return wins; }
+            set { wins = value; }
+        }
+
+        public int Losses
+        {
+            get { return losses; }
+            set { losses = value; }
         }
 
         public ServerClient(Socket clientSocket)

@@ -10,7 +10,7 @@ namespace CommandUtils
     {
         //Events
         public event CommandRecievedEventHandler CommandRecieved;
-        public event DisconnectedEventHandler Disconnected;
+        public event ServerConnectionLostEventHandler ConnectionLost;
         public event SuccessfulConnectionEventHandler ConnectionSuccessful;
         public event UnsuccsessfulConnectionEventHandler ConnectionUnsuccessful;
         //Client Data
@@ -189,7 +189,7 @@ namespace CommandUtils
             {
                 while (socket.Connected)
                 {
-                    Command cmd = (Command)formatter.Deserialize(networkStream); //This works now, probably semaphor related on sender side
+                    Command cmd = (Command)formatter.Deserialize(networkStream);
                     networkStream.Flush();
                     OnCommandRecieved(new CommandEventArgs(cmd));
                 }
@@ -198,7 +198,7 @@ namespace CommandUtils
             catch (Exception ex)
             {
                 Disconnect();
-                Console.WriteLine(ex.Message);
+                OnConnectionLost(new EventArgs());
             }
         }
 
@@ -258,10 +258,10 @@ namespace CommandUtils
         }
 
         //Event Handlers
-        protected virtual void OnDisconnected(ClientEventArgs e)
+        protected virtual void OnConnectionLost(EventArgs e)
         {
-            if (Disconnected != null)
-                Disconnected(this, e);
+            if (ConnectionLost != null)
+                ConnectionLost(this, e);
         }
 
         protected virtual void OnCommandRecieved(CommandEventArgs e)

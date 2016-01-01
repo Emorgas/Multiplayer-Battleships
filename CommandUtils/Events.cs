@@ -5,9 +5,10 @@ using System.Net.Sockets;
 namespace CommandUtils
 {
     public delegate void CommandRecievedEventHandler(object sender, CommandEventArgs e);
-    public delegate void DisconnectedEventHandler(object sender, ClientEventArgs e);
+    public delegate void DisconnectedEventHandler(object sender, DisconnectEventArgs e);
     public delegate void SuccessfulConnectionEventHandler(object sender, EventArgs e);
     public delegate void UnsuccsessfulConnectionEventHandler(object sender, EventArgs e);
+    public delegate void ServerConnectionLostEventHandler(object sender, EventArgs e);
     
     public class CommandEventArgs : EventArgs
     {
@@ -22,21 +23,18 @@ namespace CommandUtils
         }
     }
 
-    public class ClientEventArgs : EventArgs
+    public class DisconnectEventArgs : EventArgs
     {
-        private Socket socket;
-        public IPAddress IP
+        private Command command;
+
+        public Command Command
         {
-            get { return ((IPEndPoint)socket.RemoteEndPoint).Address; }
-        }
-        public int Port
-        {
-            get { return ((IPEndPoint)socket.RemoteEndPoint).Port; }
+            get { return command; }
         }
 
-        public ClientEventArgs(Socket clientManagersocket)
+        public DisconnectEventArgs(Command cmd)
         {
-            socket = clientManagersocket;
+            command = cmd;
         }
     }
 }

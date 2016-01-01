@@ -214,13 +214,24 @@ namespace BattleshipsServer
             }
         }
 
-        private void ClientDisconnected(object sender, ClientEventArgs e)
+        private void DisconnectUser(Command dcCmd)
         {
-            if (RemoveClientFromList(e.IP, e.Port))
-            {
-                Console.WriteLine("User {0}:{1} has disconnected ({2}/{3})", e.IP, e.Port, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
+            int index = FindClientID(dcCmd.SenderIP, dcCmd.SenderPort);
+            string clientDetails = clientList[index].IP.ToString() + ":" + clientList[index].Port.ToString() + ":" + clientList[index].Username;
+            Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", dcCmd.SenderIP, dcCmd.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
+            clientList[index].Disconnect();
+            clientList.RemoveAt(index);
+            Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+            cmd.SenderName = dcCmd.SenderName;
+            cmd.SenderIP = dcCmd.SenderIP;
+            cmd.SenderPort = dcCmd.SenderPort;
+            cmd.Data = clientDetails;
+            SendCommandToAll(cmd);
+        }
 
-            }
+        private void ClientDisconnected(object sender, DisconnectEventArgs e)
+        {
+            DisconnectUser(e.Command);
         }
 
         private void SendClientList(IPAddress targetIP, int targetPort)

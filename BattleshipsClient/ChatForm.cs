@@ -28,6 +28,7 @@ namespace BattleshipsClient
             this.client = client;
             Text += " - " + client.Username;
             this.client.CommandRecieved += new CommandRecievedEventHandler(CommandRecieved);
+            this.client.ConnectionLost += new ServerConnectionLostEventHandler(ConnectionLost);
             this.client.RequestClientList();
         }
 
@@ -74,6 +75,7 @@ namespace BattleshipsClient
             if (e.Command.CommandType == CommandType.ClientListRequest)
             {
                 string[] clients = Array.ConvertAll(e.Command.Data.Split(','), p => p.Trim());
+                lstUsers.Items.Clear();
                 for (int i = 0; i < clients.Length; i++)
                 {
                     if (clients[i] != "")
@@ -130,6 +132,7 @@ namespace BattleshipsClient
                 {
                     //challenge Rejected
                     activeChallenge = false;
+                    rtbChat.AppendText("Your game challenge was rejected." + Environment.NewLine);
                 }
             }
 
@@ -142,14 +145,23 @@ namespace BattleshipsClient
                     {
                         gameForm = new BattleshipGameForm(ref client, activeGameID);
                         gameForm.Show();
+                        gameForm.FormClosed += new FormClosedEventHandler(GameForm_Closed);
                     }));
                 }
                 else
                 {
                     gameForm = new BattleshipGameForm(ref client, activeGameID);
                     gameForm.Show();
+                    gameForm.FormClosed += new FormClosedEventHandler(GameForm_Closed);
+
                 }
             }
+        }
+
+        private void GameForm_Closed(object sender, EventArgs e)
+        {
+            activeChallenge = false;
+            activeGameID = -1;
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -173,29 +185,39 @@ namespace BattleshipsClient
             {
                 int itemIndex = lstUsers.SelectedIndex;
                 string username = lstUsers.Items[itemIndex].ToString();
-                IPAddress targetIP;
-                int targetPort;
-                int index = FindClientByUsername(username);
-                if (index == -1)
+                if (username != client.Username)
                 {
-                    MessageBox.Show("User could not be found! Refreshing user list...", "Error - User Not Found!", MessageBoxButtons.OK);
-                    client.RequestClientList();
-                    return;
+                    IPAddress targetIP;
+                    int targetPort;
+                    int index = FindClientByUsername(username);
+                    if (index == -1)
+                    {
+                        MessageBox.Show("User could not be found! Refreshing user list...", "Error - User Not Found!", MessageBoxButtons.OK);
+                        client.RequestClientList();
+                        return;
+                    }
+                    else
+                    {
+                        targetIP = IPAddress.Parse(clientList[index].Split(':')[0]);
+                        targetPort = int.Parse(clientList[index].Split(':')[1]);
+                    }
+                    Command cmd = new Command(CommandType.ChallengeRequest, targetIP);
+                    cmd.TargetPort = targetPort;
+                    cmd.SenderName = client.Username;
+                    cmd.SenderIP = client.IP;
+                    cmd.SenderPort = client.Port;
+                    client.SendCommand(cmd);
+                    activeChallenge = true;
+                    rtbChat.AppendText("Challenge request sent to " + username + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
                 }
-                else
-                {
-                    targetIP = IPAddress.Parse(clientList[index].Split(':')[0]);
-                    targetPort = int.Parse(clientList[index].Split(':')[1]);
-                }
-                Command cmd = new Command(CommandType.ChallengeRequest, targetIP);
-                cmd.TargetPort = targetPort;
-                cmd.SenderName = client.Username;
-                cmd.SenderIP = client.IP;
-                cmd.SenderPort = client.Port;
-                client.SendCommand(cmd);
-                activeChallenge = true;
-                MessageBox.Show("Challenge request sent to " + username + ".", "Challenge Sent!");
             }
+        }
+
+        private void ConnectionLost(object sender, EventArgs e)
+        {
+            MessageBox.Show("Connection to server lost. Signing out...", "Connection Lost!", MessageBoxButtons.OK);
+            quitApplication = false;
+            Close();
         }
 
         private int FindClientByUsername(string username)

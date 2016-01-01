@@ -84,14 +84,18 @@ namespace CommandUtils
                         cmd.SenderName = cmd.Data.Split(new char[] { ':' })[1];
                     else
                         cmd.SenderName = clientUsername;
-
                     OnCommandRecieved(new CommandEventArgs(cmd));
                 }
-                catch (Exception ex)
+                catch (Exception sockEx)
                 {
-                    Console.WriteLine("Server Client Recieve Exception: " + ex.Message);
-                    if (ex.InnerException != null)
-                        Console.WriteLine(ex.InnerException.Message);
+                    Console.WriteLine("An error occurred involving client " + Username + " at: " + IP + ":" + Port + "." + Environment.NewLine
+                        + "Exception Message: " + sockEx.Message + Environment.NewLine 
+                        + "Disconnecting client...");
+                    Command dcCmd = new Command(CommandType.UserDisconnectRequest, IPAddress.Broadcast);
+                    dcCmd.SenderName = Username;
+                    dcCmd.SenderIP = IP;
+                    dcCmd.SenderPort = Port;
+                    OnDisconnected(new DisconnectEventArgs(dcCmd));
                 }
             }
             //this.OnDisconnected(new ClientEventArgs(this.socket));
@@ -147,7 +151,6 @@ namespace CommandUtils
                     bgReciever.CancelAsync();
                     socket.Shutdown(SocketShutdown.Both);
                     socket.Close();
-                   // this.OnDisconnected(new ClientEventArgs(this.socket));
                     return true;
                 }
                 catch (Exception ex)
@@ -165,7 +168,7 @@ namespace CommandUtils
         }
 
         //Event Handlers
-        protected virtual void OnDisconnected(ClientEventArgs e)
+        protected virtual void OnDisconnected(DisconnectEventArgs e)
         {
             if (Disconnected != null)
                 Disconnected(this, e);

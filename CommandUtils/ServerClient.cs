@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.ComponentModel;
-using System.Xml.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CommandUtils

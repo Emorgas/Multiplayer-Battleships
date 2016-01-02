@@ -13,6 +13,7 @@ namespace BattleshipsServer
         private Socket listenerSocket;
         private IPAddress serverIP;
         private int serverPort;
+        private IPAddress externalIP;
         private BackgroundWorker bgListener;
         //Client Data
         private List<ServerClient> clientList;
@@ -28,7 +29,10 @@ namespace BattleshipsServer
 
             if (args.Length == 0)
             {
-                prog.serverIP = IPAddress.Loopback;
+                IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+                prog.externalIP = IPAddress.Parse(prog.GetIP());
+                IPAddress ip = ipHostInfo.AddressList[0];
+                prog.serverIP = ip;
                 prog.serverPort = 10001;
             }
             else if (args.Length == 1)
@@ -54,11 +58,19 @@ namespace BattleshipsServer
             prog.bgListener.DoWork += new DoWorkEventHandler(prog.Listen);
             prog.bgListener.RunWorkerAsync();
 
-            Console.WriteLine("Listening on {0}:{1}. Press ENTER to shutdown the server.", prog.serverIP, prog.serverPort);
-            Console.ReadLine();
+            Console.WriteLine("Listening on Local IP: {0}:{1}" + Environment.NewLine + "External IP: {2}:{1}." + Environment.NewLine + "Press ANY KEY to shutdown the server.", prog.serverIP, prog.serverPort, prog.externalIP);
+            Console.ReadKey();
 
             prog.DisconnectServer();
         }
+        private string GetIP()
+        {
+            string externalIP = "";
+            externalIP = (new WebClient()).DownloadString("http://bot.whatismyipaddress.com");
+            externalIP = (new System.Text.RegularExpressions.Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")).Matches(externalIP)[0].ToString();
+            return externalIP;
+        }
+
         private void Listen(object sender, DoWorkEventArgs e)
         {
             try

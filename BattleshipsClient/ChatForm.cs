@@ -198,8 +198,6 @@ namespace BattleshipsClient
             {
                 int itemIndex = lstUsers.SelectedIndex;
                 string username = lstUsers.Items[itemIndex].ToString();
-                int wins = -1;
-                int losses = -1;
                 if (username != client.Username)
                 {
                     IPAddress targetIP;

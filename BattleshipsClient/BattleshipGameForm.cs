@@ -112,6 +112,8 @@ namespace BattleshipsClient
                     cmdInform.SenderIP = client.IP;
                     cmdInform.SenderPort = client.Port;
                     cmdInform.SenderName = client.Username;
+                    client.Wins++;
+                    client.SendCommand(cmdInform);
                     MessageBox.Show("Congratulations " + client.Username + " you have won the game!" + Environment.NewLine + "Closing this dialog will close the game window.", "Winner!", MessageBoxButtons.OK);
                     Close();
                 }
@@ -122,6 +124,8 @@ namespace BattleshipsClient
                     cmdInform.SenderIP = client.IP;
                     cmdInform.SenderPort = client.Port;
                     cmdInform.SenderName = client.Username;
+                    client.Losses++;
+                    client.SendCommand(cmdInform);
                     MessageBox.Show("Sorry " + client.Username + " you have lost the game." + Environment.NewLine + "Closing this dialog will close the game window.", "Game Lost", MessageBoxButtons.OK);
                     Close();
 

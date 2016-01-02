@@ -93,10 +93,10 @@ namespace BattleshipsClient
             {
                 if (activeChallenge == false)
                 {
-                    int index = FindClientByUsername(e.Command.SenderName);
+                    string data = e.Command.Data;
                     DialogResult dr = MessageBox.Show(e.Command.SenderName + " has challenged you!" + Environment.NewLine 
-                        + "Wins: " + int.Parse(clientList[index].Split(':')[3]) + Environment.NewLine
-                        + "Losses: " + int.Parse(clientList[index].Split(':')[4]) + Environment.NewLine
+                        + "Wins: " + int.Parse(data.Split(':')[0]) + Environment.NewLine
+                        + "Losses: " + int.Parse(data.Split(':')[1]) + Environment.NewLine
                         + "Do You accept?", "You have been challenged!", MessageBoxButtons.YesNo);
                     if (dr == DialogResult.Yes)
                     {
@@ -162,6 +162,11 @@ namespace BattleshipsClient
 
                 }
             }
+
+            if (e.Command.CommandType == CommandType.UserDataInform)
+            {
+                ConfirmChallenge(e.Command);
+            }
         }
 
         private void GameForm_Closed(object sender, EventArgs e)
@@ -210,26 +215,37 @@ namespace BattleshipsClient
                     {
                         targetIP = IPAddress.Parse(clientList[index].Split(':')[0]);
                         targetPort = int.Parse(clientList[index].Split(':')[1]);
-                        wins = int.Parse(clientList[index].Split(':')[3]);
-                        losses = int.Parse(clientList[index].Split(':')[4]);
-                    }
-                    DialogResult dr = MessageBox.Show(username + Environment.NewLine + "Wins: " + wins + Environment.NewLine + "Losses: " + losses + Environment.NewLine + "Challenge this user?", "Challenge a User", MessageBoxButtons.YesNo);
-                    if (dr == DialogResult.Yes)
-                    {
-                        Command cmd = new Command(CommandType.ChallengeRequest, targetIP);
+                        Command cmd = new Command(CommandType.UserDataRequest, targetIP);
                         cmd.TargetPort = targetPort;
-                        cmd.SenderName = client.Username;
                         cmd.SenderIP = client.IP;
                         cmd.SenderPort = client.Port;
+                        cmd.SenderName = client.Username;
                         client.SendCommand(cmd);
-                        activeChallenge = true;
-                        rtbChat.AppendText("Challenge request sent to " + username + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
-                    }
-                    else
-                    {
-                        rtbChat.AppendText("Challenge aborted." + Environment.NewLine);
                     }
                 }
+            }
+        }
+
+        private void ConfirmChallenge(Command cmd)
+        {
+            string data = cmd.Data;
+            int wins = int.Parse(data.Split(':')[0]);
+            int losses = int.Parse(data.Split(':')[1]);
+            DialogResult dr = MessageBox.Show(cmd.SenderName + Environment.NewLine + "Wins: " + wins + Environment.NewLine + "Losses: " + losses + Environment.NewLine + "Challenge this user?", "Challenge a User", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                Command responseCmd = new Command(CommandType.ChallengeRequest, cmd.SenderIP);
+                responseCmd.TargetPort = cmd.SenderPort;
+                responseCmd.SenderName = client.Username;
+                responseCmd.SenderIP = client.IP;
+                responseCmd.SenderPort = client.Port;
+                client.SendCommand(responseCmd);
+                activeChallenge = true;
+                rtbChat.AppendText("Challenge request sent to " + cmd.SenderName + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
+            }
+            else
+            {
+                rtbChat.AppendText("Challenge aborted." + Environment.NewLine);
             }
         }
 

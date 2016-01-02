@@ -152,7 +152,7 @@ namespace BattleshipsServer
         private void CommandRecieved(object sender, CommandEventArgs e)
         {
             //When a user connects set their client username
-            if (e.Command.CommandType == CommandUtils.CommandType.UserConnected)
+            if (e.Command.CommandType == CommandType.UserConnected)
             {
                 string username = e.Command.Data.Split(':')[2];
                 Console.WriteLine("Checking for : " + username);
@@ -176,14 +176,14 @@ namespace BattleshipsServer
             }
 
             //User asks to disconnect
-            if (e.Command.CommandType == CommandUtils.CommandType.UserDisconnectRequest)
+            if (e.Command.CommandType == CommandType.UserDisconnectRequest)
             {
                 int index = FindClientID(e.Command.SenderIP, e.Command.SenderPort);
                 string clientDetails = clientList[index].IP.ToString() + ":" + clientList[index].Port.ToString() + ":" + clientList[index].Username;
                 Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", e.Command.SenderIP, e.Command.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
                 clientList[index].Disconnect();
                 clientList.RemoveAt(index);
-                Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
+                Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
                 cmd.SenderName = e.Command.SenderName;
                 cmd.SenderIP = e.Command.SenderIP;
                 cmd.SenderPort = e.Command.SenderPort;
@@ -193,13 +193,13 @@ namespace BattleshipsServer
             }
 
             //Reply to client list request
-            if (e.Command.CommandType == CommandUtils.CommandType.ClientListRequest)
+            if (e.Command.CommandType == CommandType.ClientListRequest)
             {
                 SendClientList(e.Command.SenderIP, e.Command.SenderPort);
             }
 
             //Sends message commands to all connected clients
-            if (e.Command.CommandType == CommandUtils.CommandType.Message)
+            if (e.Command.CommandType == CommandType.Message)
             {
                 if (e.Command.TargetIP.Equals(IPAddress.Broadcast))
                 {
@@ -212,19 +212,21 @@ namespace BattleshipsServer
             }
 
             //Pass challenge request to challenged user
-            if (e.Command.CommandType == CommandUtils.CommandType.ChallengeRequest)
+            if (e.Command.CommandType == CommandType.ChallengeRequest)
             {
+                int challengerID = FindClientID(e.Command.SenderIP, e.Command.SenderPort);
+                e.Command.Data = clientList[challengerID].Wins + ":" + clientList[challengerID].Losses;
                 SendCommandToClient(e.Command);
             }
 
             //Pass challenge response to challenger
-            if (e.Command.CommandType == CommandUtils.CommandType.ChallengeResponse)
+            if (e.Command.CommandType == CommandType.ChallengeResponse)
             {
                 SendCommandToClient(e.Command);
             }
 
             //Handle game start request
-            if (e.Command.CommandType == CommandUtils.CommandType.GameStartRequest)
+            if (e.Command.CommandType == CommandType.GameStartRequest)
             {
                 IPAddress client2IP = IPAddress.Parse(e.Command.Data.Split(':')[0]);
                 int client2Port = int.Parse(e.Command.Data.Split(':')[1]);
@@ -232,7 +234,7 @@ namespace BattleshipsServer
                 int client2ID = FindClientID(client2IP, client2Port);
                 BattleshipsGame game = new BattleshipsGame(clientList[client1ID], clientList[client2ID]);
 
-                Command cmd = new Command(CommandUtils.CommandType.GameIDInform, e.Command.SenderIP, activeGames.Count.ToString());
+                Command cmd = new Command(CommandType.GameIDInform, e.Command.SenderIP, activeGames.Count.ToString());
                 cmd.SenderName = "server";
                 cmd.SenderIP = serverIP;
                 cmd.SenderPort = serverPort;
@@ -247,17 +249,17 @@ namespace BattleshipsServer
             }
 
             //Handle ShipPlacementRequest
-            if (e.Command.CommandType == CommandUtils.CommandType.GameShipRequest)
+            if (e.Command.CommandType == CommandType.GameShipRequest)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].CommandRecieved(e);
             }
             //Handle GameShotRequest
-            if (e.Command.CommandType == CommandUtils.CommandType.GameShotRequest)
+            if (e.Command.CommandType == CommandType.GameShotRequest)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].CommandRecieved(e);
             }
             //Handle GameOverInform
-            if (e.Command.CommandType == CommandUtils.CommandType.GameOverInform)
+            if (e.Command.CommandType == CommandType.GameOverInform)
             {
                 activeGames[int.Parse(e.Command.Data.Split(':')[0])].GameOverMessageCount++;
                 if (activeGames[int.Parse(e.Command.Data.Split(':')[0])].GameOverMessageCount >= 2)
@@ -266,6 +268,19 @@ namespace BattleshipsServer
                     activeGames.RemoveAt(int.Parse(e.Command.Data.Split(':')[0]));
                     GC.Collect();
                 }
+            }
+
+            //Handle user data request
+            if (e.Command.CommandType == CommandType.UserDataRequest)
+            {
+                int ID = FindClientID(e.Command.TargetIP, e.Command.TargetPort);
+                string data = CheckForClientData(clientList[ID].Username);
+                Command cmd = new Command(CommandType.UserDataInform, e.Command.SenderIP, data);
+                cmd.SenderIP = e.Command.TargetIP;
+                cmd.SenderPort = e.Command.TargetPort;
+                cmd.SenderName = clientList[ID].Username; //Client username and IPEndpoint data is stored as command sender data
+                cmd.TargetPort = e.Command.SenderPort;
+                SendCommandToClient(cmd);
             }
         }
 
@@ -278,7 +293,7 @@ namespace BattleshipsServer
                 data.Add("LOSSES", clients[i].Losses.ToString());
                 try
                 {
-                    dataBase.Update("USERS", data, string.Format("USERNAME = {0}", clients[i].Username));
+                    dataBase.Update("USERS", data, string.Format("USERNAME = '{0}'", clients[i].Username));
                 }
                 catch (Exception e)
                 {
@@ -295,7 +310,7 @@ namespace BattleshipsServer
             Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", dcCmd.SenderIP, dcCmd.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
             clientList[index].Disconnect();
             clientList.RemoveAt(index);
-            Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
+            Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
             cmd.SenderName = dcCmd.SenderName;
             cmd.SenderIP = dcCmd.SenderIP;
             cmd.SenderPort = dcCmd.SenderPort;
@@ -318,7 +333,7 @@ namespace BattleshipsServer
                 clientList += clientDetails;
             }
             Console.WriteLine("Send Client list info to: " + targetIP + ':' + targetPort);
-            Command cmd = new Command(CommandUtils.CommandType.ClientListRequest, targetIP);
+            Command cmd = new Command(CommandType.ClientListRequest, targetIP);
             cmd.TargetPort = targetPort;
             cmd.Data = clientList;
             cmd.SenderIP = serverIP;
@@ -341,7 +356,7 @@ namespace BattleshipsServer
 
         private void AnswerUsernameRequest(IPAddress targetIP, int targetPort, bool usernameAvailiability)
         {
-            Command cmd = new Command(CommandUtils.CommandType.UsernameRequest, targetIP, usernameAvailiability.ToString());
+            Command cmd = new Command(CommandType.UsernameRequest, targetIP, usernameAvailiability.ToString());
             cmd.TargetPort = targetPort;
             cmd.SenderIP = serverIP;
             cmd.SenderPort = serverPort;
@@ -392,7 +407,7 @@ namespace BattleshipsServer
                     string clientName = clientList[index].Username;
                     clientList.RemoveAt(index);
 
-                    Command cmd = new Command(CommandUtils.CommandType.UserDisconnected, IPAddress.Broadcast);
+                    Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
                     cmd.SenderName = clientName;
                     cmd.SenderIP = ip;
                     cmd.SenderPort = port;

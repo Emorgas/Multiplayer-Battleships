@@ -9,6 +9,7 @@ namespace CommandUtils
     public enum CommandType
     {
         UserConnected,
+        UserDataRequest,
         UserDataInform,
         UserDisconnectRequest,
         UserDisconnected,

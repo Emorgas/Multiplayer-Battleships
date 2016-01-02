@@ -73,7 +73,7 @@ namespace BattleshipsServer
             {
                 foreach (KeyValuePair<string, string> val in data)
                 {
-                    vals += string.Format(" {0} = '{1'},", val.Key.ToString(), val.Value.ToString());
+                    vals += string.Format(" {0} = '{1}',", val.Key.ToString(), val.Value.ToString());
                 }
                 vals = vals.Substring(0, vals.Length - 1);
             }
@@ -81,8 +81,9 @@ namespace BattleshipsServer
             {
                 this.ExecuteNonQuery(string.Format("update {0} set {1} where {2};", tableName, vals, where));
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
             return true;

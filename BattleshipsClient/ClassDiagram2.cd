@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="CommandUtils.Command">
+    <Position X="0.5" Y="0.5" Width="4.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.CommandEventArgs">
+    <Position X="5.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.DisconnectEventArgs">
+    <Position X="8.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.GridPosition">
+    <Position X="3.5" Y="7.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.LocalClient">
+    <Position X="12.5" Y="2.5" Width="4.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.ServerClient">
+    <Position X="6.25" Y="2.5" Width="3.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="CommandUtils.Ship">
+    <Position X="0.5" Y="3.5" Width="5.5" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="CommandUtils.CommandType">
+    <Position X="10.25" Y="2.5" Width="2" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommandUtils.ShipType">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="CommandUtils.GridType">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Delegate Name="CommandUtils.CommandRecievedEventHandler">
+    <Position X="0.5" Y="6.25" Width="2.5" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommandUtils.DisconnectedEventHandler">
+    <Position X="9.25" Y="7.25" Width="2.25" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommandUtils.SuccessfulConnectionEventHandler">
+    <Position X="0.5" Y="7.5" Width="2.75" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommandUtils.UnsuccsessfulConnectionEventHandler">
+    <Position X="3.25" Y="6.25" Width="2.75" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="CommandUtils.ServerConnectionLostEventHandler">
+    <Position X="6.25" Y="6.75" Width="2.75" />
+    <TypeIdentifier />
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

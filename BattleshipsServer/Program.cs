@@ -195,7 +195,7 @@ namespace BattleshipsServer
                 Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", e.Command.SenderIP, e.Command.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
                 clientList[index].Disconnect();
                 clientList.RemoveAt(index);
-                Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+                Command cmd = new Command(CommandType.UserDisconnected, Command.BroadcastAddress);
                 cmd.SenderName = e.Command.SenderName;
                 cmd.SenderIP = e.Command.SenderIP;
                 cmd.SenderPort = e.Command.SenderPort;
@@ -213,7 +213,7 @@ namespace BattleshipsServer
             //Sends message commands to all connected clients
             if (e.Command.CommandType == CommandType.Message)
             {
-                if (e.Command.TargetIP.Equals(IPAddress.Broadcast))
+                if (e.Command.TargetIP.Equals(Command.BroadcastAddress))
                 {
                     SendCommandToAll(e.Command);
                 }
@@ -322,7 +322,7 @@ namespace BattleshipsServer
             Console.WriteLine("User {0}:{1} ({2}) has disconnected ({3}/{4})", dcCmd.SenderIP, dcCmd.SenderPort, clientList[index].Username, DateTime.Now.ToShortTimeString(), DateTime.Now.ToLongDateString());
             clientList[index].Disconnect();
             clientList.RemoveAt(index);
-            Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+            Command cmd = new Command(CommandType.UserDisconnected, Command.BroadcastAddress);
             cmd.SenderName = dcCmd.SenderName;
             cmd.SenderIP = dcCmd.SenderIP;
             cmd.SenderPort = dcCmd.SenderPort;
@@ -419,7 +419,7 @@ namespace BattleshipsServer
                     string clientName = clientList[index].Username;
                     clientList.RemoveAt(index);
 
-                    Command cmd = new Command(CommandType.UserDisconnected, IPAddress.Broadcast);
+                    Command cmd = new Command(CommandType.UserDisconnected,Command.BroadcastAddress);
                     cmd.SenderName = clientName;
                     cmd.SenderIP = ip;
                     cmd.SenderPort = port;

@@ -103,7 +103,7 @@ namespace CommandUtils
                     Console.WriteLine("An error occurred involving client " + Username + " at: " + IP + ":" + Port + "." + Environment.NewLine
                         + "Exception Message: " + sockEx.Message + Environment.NewLine 
                         + "Disconnecting client...");
-                    Command dcCmd = new Command(CommandType.UserDisconnectRequest, IPAddress.Broadcast);
+                    Command dcCmd = new Command(CommandType.UserDisconnectRequest, Command.BroadcastAddress);
                     dcCmd.SenderName = Username;
                     dcCmd.SenderIP = IP;
                     dcCmd.SenderPort = Port;

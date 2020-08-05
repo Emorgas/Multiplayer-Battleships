@@ -14,6 +14,8 @@ namespace CommandUtils
         private IPAddress targetIP;
         private int targetPort;
         private string data;
+        // IPAddress.Broadcast -> Error on Linux/Mono .Error sending data to server, Error: Type 'System.Net.IPAddress+ReadOnlyIPAddress' in Assembly 'System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' is not marked as serializable.
+        public static IPAddress BroadcastAddress = new IPAddress(new byte[] { 255, 255, 255, 255 });
         //Properties
         public CommandType CommandType
         {

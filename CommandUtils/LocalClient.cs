@@ -137,7 +137,7 @@ namespace CommandUtils
                 bgReciever.RunWorkerAsync();
 
                 //Send connection command
-                Command cmd = new Command(CommandType.UserConnected, IPAddress.Broadcast, IP.ToString() + ":" + Port.ToString() + ":" + Username);
+                Command cmd = new Command(CommandType.UserConnected,Command.BroadcastAddress, IP.ToString() + ":" + Port.ToString() + ":" + Username);
                 cmd.SenderIP = IP;
                 cmd.SenderPort = Port;
                 cmd.SenderName = Username;

@@ -182,10 +182,10 @@ namespace CommandUtils
                 semaphor.Release();
                 return true;
             }
-            catch
+            catch(Exception Ex)
             {
                 semaphor.Release();
-                Console.WriteLine("Error sending data to server");
+                Console.WriteLine("Error sending data to server, Error: {0}", Ex.Message);
                 return false;
             }
         }

@@ -96,6 +96,7 @@
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(178, 20);
             this.txtServerPort.TabIndex = 1;
+            this.txtServerPort.Text = "10001";
             // 
             // label3
             // 

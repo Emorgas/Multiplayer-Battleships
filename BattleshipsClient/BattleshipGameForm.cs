@@ -68,7 +68,7 @@ namespace BattleshipsClient
                     pictureBox.Tag = "ShipHit";
                     btnFire.Enabled = false;
                     myTurn = false;
-                    rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine);
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () {rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine); ; });
 
                 }
                 else if (e.Command.Data.ToLower().Equals("miss"))
@@ -579,7 +579,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Destroyer)
             {
                 selectedShipType = ShipType.Destroyer;
-                rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 2 grid squares" + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 2 grid squares" + Environment.NewLine); ; });
             }
         }
 
@@ -588,7 +588,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Cruiser)
             {
                 selectedShipType = ShipType.Cruiser;
-                rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
             }
         }
 
@@ -597,7 +597,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Submarine)
             {
                 selectedShipType = ShipType.Submarine;
-                rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
             }
         }
 
@@ -606,7 +606,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Battleship)
             {
                 selectedShipType = ShipType.Battleship;
-                rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 4 grid squares" + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 4 grid squares" + Environment.NewLine); ; });
             }
         }
 
@@ -615,7 +615,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Carrier)
             {
                 selectedShipType = ShipType.Carrier;
-                rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 5 grid squares" + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () {  rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 5 grid squares" + Environment.NewLine); ; });
             }
         }
 
@@ -677,7 +677,7 @@ namespace BattleshipsClient
             cmd.SenderPort = client.Port;
             cmd.SenderName = client.Username;
             client.SendCommand(cmd);
-            rtbLog.AppendText("Ship placement sent to server. Waiting for other player..." + Environment.NewLine);
+            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Ship placement sent to server. Waiting for other player..." + Environment.NewLine); ; });
             //Submit Button
             btnSubmit.Enabled = false;
             btnSubmit.Visible = false;
@@ -713,7 +713,7 @@ namespace BattleshipsClient
                 cmd.SenderName = client.Username;
                 cmd.SenderPort = client.Port;
                 client.SendCommand(cmd);
-                rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine);
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine); ; });
             }
         }
 

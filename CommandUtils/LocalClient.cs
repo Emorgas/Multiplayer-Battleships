@@ -137,14 +137,15 @@ namespace CommandUtils
                 bgReciever.RunWorkerAsync();
 
                 //Send connection command
-                Command cmd = new Command(CommandType.UserConnected, IPAddress.Broadcast, IP.ToString() + ":" + Port.ToString() + ":" + Username);
+                Command cmd = new Command(CommandType.UserConnected,Command.BroadcastAddress, IP.ToString() + ":" + Port.ToString() + ":" + Username);
                 cmd.SenderIP = IP;
                 cmd.SenderPort = Port;
                 cmd.SenderName = Username;
                 SendCommand(cmd);
             }
-            catch
+            catch(Exception Ex)
             {
+                Console.WriteLine("Error occured while sending command to Server. Error: {0}", Ex.Message);
                 e.Result = false;
             }
         }
@@ -182,10 +183,10 @@ namespace CommandUtils
                 semaphor.Release();
                 return true;
             }
-            catch
+            catch(Exception Ex)
             {
                 semaphor.Release();
-                Console.WriteLine("Error sending data to server");
+                Console.WriteLine("Error sending data to server, Error: {0}", Ex.Message);
                 return false;
             }
         }

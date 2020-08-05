@@ -181,7 +181,7 @@ namespace BattleshipsClient
         {
             if (txtMessage.Text != "")
             {
-                Command cmd = new Command(CommandType.Message, IPAddress.Broadcast, txtMessage.Text + Environment.NewLine);
+                Command cmd = new Command(CommandType.Message, Command.BroadcastAddress, txtMessage.Text + Environment.NewLine);
                 cmd.SenderIP = client.IP;
                 cmd.SenderName = client.Username;
                 cmd.SenderPort = client.Port;

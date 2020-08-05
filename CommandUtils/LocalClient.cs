@@ -143,8 +143,9 @@ namespace CommandUtils
                 cmd.SenderName = Username;
                 SendCommand(cmd);
             }
-            catch
+            catch(Exception Ex)
             {
+                Console.WriteLine("Error occured while sending command to Server. Error: {0}", Ex.Message);
                 e.Result = false;
             }
         }

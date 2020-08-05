@@ -147,7 +147,7 @@ namespace BattleshipsClient
             for (int c = 0; c < grid.ColumnCount; c++)
             {
                 for (int r = 0; r < grid.RowCount; r++)
-                {
+                { 
                     pictureBox = new PictureBox();
                     pictureBox.Visible = true;
                     pictureBox.Dock = DockStyle.Fill;

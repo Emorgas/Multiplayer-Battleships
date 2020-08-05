@@ -122,6 +122,7 @@
             // EnemyGrid
             // 
             this.EnemyGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.EnemyGrid.BackColor = System.Drawing.SystemColors.Control;
             this.EnemyGrid.ColumnCount = 10;
             this.EnemyGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.EnemyGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -151,7 +152,6 @@
             // 
             // label19
             // 
-            this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(4, 249);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(12, 13);
@@ -160,7 +160,6 @@
             // 
             // label20
             // 
-            this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(4, 223);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(10, 13);
@@ -169,7 +168,6 @@
             // 
             // label15
             // 
-            this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(3, 201);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(15, 13);
@@ -178,7 +176,6 @@
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(4, 175);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(15, 13);
@@ -187,7 +184,6 @@
             // 
             // label17
             // 
-            this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(4, 151);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(13, 13);
@@ -196,7 +192,6 @@
             // 
             // label18
             // 
-            this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(4, 125);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(14, 13);
@@ -205,7 +200,6 @@
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(4, 101);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(15, 13);
@@ -214,7 +208,6 @@
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(4, 75);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(14, 13);
@@ -223,7 +216,6 @@
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(4, 51);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(14, 13);
@@ -232,7 +224,6 @@
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(4, 25);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(14, 13);
@@ -241,7 +232,6 @@
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(246, 3);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(19, 13);
@@ -250,7 +240,6 @@
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(225, 3);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(13, 13);
@@ -259,7 +248,6 @@
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(200, 3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(13, 13);
@@ -268,7 +256,6 @@
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(175, 3);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(13, 13);
@@ -277,7 +264,6 @@
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(150, 3);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(13, 13);
@@ -286,7 +272,6 @@
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(125, 3);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(13, 13);
@@ -295,7 +280,6 @@
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(100, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(13, 13);
@@ -304,7 +288,6 @@
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(75, 3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(13, 13);
@@ -313,7 +296,6 @@
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(50, 3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(13, 13);
@@ -322,7 +304,6 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(25, 3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(13, 13);
@@ -376,38 +357,37 @@
             // 
             // PlayerGrid
             // 
-            this.PlayerGrid.AutoSize = true;
             this.PlayerGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PlayerGrid.BackColor = System.Drawing.SystemColors.Control;
             this.PlayerGrid.ColumnCount = 10;
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.PlayerGrid.Location = new System.Drawing.Point(20, 19);
             this.PlayerGrid.Name = "PlayerGrid";
             this.PlayerGrid.RowCount = 10;
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.PlayerGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.PlayerGrid.Size = new System.Drawing.Size(250, 250);
             this.PlayerGrid.TabIndex = 120;
             // 
             // label21
             // 
-            this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(4, 249);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(12, 13);
@@ -416,7 +396,6 @@
             // 
             // label22
             // 
-            this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(4, 223);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(10, 13);
@@ -425,7 +404,6 @@
             // 
             // label23
             // 
-            this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(3, 201);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(15, 13);
@@ -434,7 +412,6 @@
             // 
             // label24
             // 
-            this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(4, 175);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(15, 13);
@@ -443,7 +420,6 @@
             // 
             // label25
             // 
-            this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(4, 151);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(13, 13);
@@ -452,7 +428,6 @@
             // 
             // label26
             // 
-            this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(4, 125);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(14, 13);
@@ -461,7 +436,6 @@
             // 
             // label27
             // 
-            this.label27.AutoSize = true;
             this.label27.Location = new System.Drawing.Point(4, 101);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(15, 13);
@@ -470,7 +444,6 @@
             // 
             // label28
             // 
-            this.label28.AutoSize = true;
             this.label28.Location = new System.Drawing.Point(4, 75);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(14, 13);
@@ -479,7 +452,6 @@
             // 
             // label29
             // 
-            this.label29.AutoSize = true;
             this.label29.Location = new System.Drawing.Point(4, 51);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(14, 13);
@@ -488,7 +460,6 @@
             // 
             // label30
             // 
-            this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(4, 25);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(14, 13);
@@ -497,7 +468,6 @@
             // 
             // label31
             // 
-            this.label31.AutoSize = true;
             this.label31.Location = new System.Drawing.Point(246, 3);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(19, 13);
@@ -506,7 +476,6 @@
             // 
             // label32
             // 
-            this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(225, 3);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(13, 13);
@@ -515,7 +484,6 @@
             // 
             // label33
             // 
-            this.label33.AutoSize = true;
             this.label33.Location = new System.Drawing.Point(200, 3);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(13, 13);
@@ -524,7 +492,6 @@
             // 
             // label34
             // 
-            this.label34.AutoSize = true;
             this.label34.Location = new System.Drawing.Point(175, 3);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(13, 13);
@@ -533,7 +500,6 @@
             // 
             // label35
             // 
-            this.label35.AutoSize = true;
             this.label35.Location = new System.Drawing.Point(150, 3);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(13, 13);
@@ -542,7 +508,6 @@
             // 
             // label36
             // 
-            this.label36.AutoSize = true;
             this.label36.Location = new System.Drawing.Point(125, 3);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(13, 13);
@@ -551,7 +516,6 @@
             // 
             // label37
             // 
-            this.label37.AutoSize = true;
             this.label37.Location = new System.Drawing.Point(100, 3);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(13, 13);
@@ -560,7 +524,6 @@
             // 
             // label38
             // 
-            this.label38.AutoSize = true;
             this.label38.Location = new System.Drawing.Point(75, 3);
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(13, 13);
@@ -569,7 +532,6 @@
             // 
             // label39
             // 
-            this.label39.AutoSize = true;
             this.label39.Location = new System.Drawing.Point(50, 3);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(13, 13);
@@ -578,7 +540,6 @@
             // 
             // label40
             // 
-            this.label40.AutoSize = true;
             this.label40.Location = new System.Drawing.Point(25, 3);
             this.label40.Name = "label40";
             this.label40.Size = new System.Drawing.Size(13, 13);
@@ -731,11 +692,9 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BattleshipGameForm_FormClosing);
             this.Load += new System.EventHandler(this.BattleshipGameForm_Load);
             this.OpPanel.ResumeLayout(false);
-            this.OpPanel.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.MyPanel.ResumeLayout(false);
-            this.MyPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

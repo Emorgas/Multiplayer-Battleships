@@ -29,7 +29,7 @@ namespace BattleshipsServer
 
             if (args.Length == 0)
             {
-                IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
                 prog.externalIP = IPAddress.Parse(prog.GetIP());
                 IPAddress ip = ipHostInfo.AddressList[0];
                 prog.serverIP = ip;

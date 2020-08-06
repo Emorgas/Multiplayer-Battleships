@@ -593,7 +593,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Destroyer)
             {
                 selectedShipType = ShipType.Destroyer;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 2 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName1"),"2")); ; });
             }
         }
 
@@ -602,7 +602,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Cruiser)
             {
                 selectedShipType = ShipType.Cruiser;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName2"),"3")); ; });
             }
         }
 
@@ -611,7 +611,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Submarine)
             {
                 selectedShipType = ShipType.Submarine;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName3"),"3")); ; });
             }
         }
 
@@ -620,7 +620,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Battleship)
             {
                 selectedShipType = ShipType.Battleship;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 4 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName4"),"4")); ; });
             }
         }
 
@@ -629,7 +629,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Carrier)
             {
                 selectedShipType = ShipType.Carrier;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () {  rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 5 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () {  rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName5"),"5")); ; });
             }
         }
 
@@ -640,23 +640,23 @@ namespace BattleshipsClient
             //Re-enable the buttons
             //Destroyer
             btnDestroyer.Enabled = true;
-            btnDestroyer.Text = "Destroyer";
+            btnDestroyer.Text = i18n.GetText("shipName1");
             btnDestroyer.Visible = true;
             //Cruiser
             btnCruiser.Enabled = true;
-            btnCruiser.Text = "Cruiser";
+            btnCruiser.Text = i18n.GetText("shipName2"); 
             btnCruiser.Visible = true;
             //Submarine
             btnSubmarine.Enabled = true;
-            btnSubmarine.Text = "Submarine";
+            btnSubmarine.Text = i18n.GetText("shipName3"); 
             btnSubmarine.Visible = true;
             //Battleship
             btnBattleship.Enabled = true;
-            btnBattleship.Text = "Battleship";
+            btnBattleship.Text = i18n.GetText("shipName4");
             btnBattleship.Visible = true;
             //Carrier
             btnCarrier.Enabled = true;
-            btnCarrier.Text = "Carrier";
+            btnCarrier.Text = i18n.GetText("shipName5");
             btnCarrier.Visible = true;
 
             btnSubmit.Enabled = false;

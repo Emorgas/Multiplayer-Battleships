@@ -30,8 +30,13 @@ namespace BattleshipsClient
             this.client.CommandRecieved += new CommandRecievedEventHandler(CommandRecieved);
             this.client.ConnectionLost += new ServerConnectionLostEventHandler(ConnectionLost);
             this.client.RequestClientList();
-            lblWins.Text = "Your Wins: " + this.client.Wins;
-            lblLosses.Text = "Your Losses: " + this.client.Losses;
+            lblWins.Text = i18n.GetText("yourWins", this.client.Wins.ToString());
+            lblLosses.Text = i18n.GetText("yourLosses", this.client.Losses.ToString());
+            btnChallenge.Text = i18n.GetText("challenge");
+            btnSend.Text= i18n.GetText("sendMessage");
+            this.Name = i18n.GetText("chatFormTtile");
+            exitToolStripMenuItem.Text = i18n.GetText("signOut");
+            label1.Text= i18n.GetText("connectedUsers");
         }
 
         private void CommandRecieved(object sender, CommandEventArgs e)
@@ -48,7 +53,7 @@ namespace BattleshipsClient
                 {
                     clientList.Add(e.Command.Data);
                     string username = e.Command.Data.Split(':')[2];
-                    rtbChat.AppendText(username + " has connected." + Environment.NewLine);
+                    rtbChat.AppendText(i18n.GetText("userHasConnected", username));
                     lstUsers.Items.Add(username);
                 }
                 //Notify of user disconnecting
@@ -70,7 +75,7 @@ namespace BattleshipsClient
                             clientList.RemoveAt(i);
                         }
                     }
-                    rtbChat.AppendText(username + " has disconnected." + Environment.NewLine);
+                    rtbChat.AppendText(i18n.GetText("userHasDisconected", username));
                 }
             }
             //Update client list when recieved - Outside self message check to enable server to inform client of it's existence
@@ -94,10 +99,7 @@ namespace BattleshipsClient
                 if (activeChallenge == false)
                 {
                     string data = e.Command.Data;
-                    DialogResult dr = MessageBox.Show(e.Command.SenderName + " has challenged you!" + Environment.NewLine 
-                        + "Wins: " + int.Parse(data.Split(':')[0]) + Environment.NewLine
-                        + "Losses: " + int.Parse(data.Split(':')[1]) + Environment.NewLine
-                        + "Do You accept?", "You have been challenged!", MessageBoxButtons.YesNo);
+                    DialogResult dr = MessageBox.Show(i18n.GetText("ChallengeRequest", e.Command.SenderName,data.Split(':')[0] ,data.Split(':')[1]), i18n.GetText("ChallengeRequestTitle"), MessageBoxButtons.YesNo);
                     if (dr == DialogResult.Yes)
                     {
                         activeChallenge = true;
@@ -138,7 +140,7 @@ namespace BattleshipsClient
                 {
                     //challenge Rejected
                     activeChallenge = false;
-                    rtbChat.AppendText("Your game challenge was rejected." + Environment.NewLine);
+                    rtbChat.AppendText(i18n.GetText("ChallengeRejected"));
                 }
             }
 
@@ -173,8 +175,8 @@ namespace BattleshipsClient
         {
             activeChallenge = false;
             activeGameID = -1;
-            lblWins.Text = "Your Wins: " + client.Wins;
-            lblLosses.Text = "Your Losses: " + client.Losses;
+            lblWins.Text = i18n.GetText("yourWins", client.Wins.ToString());
+            lblLosses.Text = i18n.GetText("yourLosses", client.Losses.ToString());
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -197,6 +199,8 @@ namespace BattleshipsClient
             if (activeChallenge == false)
             {
                 int itemIndex = lstUsers.SelectedIndex;
+                if (itemIndex <= -1)
+                    return;
                 string username = lstUsers.Items[itemIndex].ToString();
                 if (username != client.Username)
                 {
@@ -205,7 +209,7 @@ namespace BattleshipsClient
                     int index = FindClientByUsername(username);
                     if (index == -1)
                     {
-                        MessageBox.Show("User could not be found! Refreshing user list...", "Error - User Not Found!", MessageBoxButtons.OK);
+                        MessageBox.Show(i18n.GetText("userNotFound"),i18n.GetText("userNotFoundTitle"), MessageBoxButtons.OK);
                         client.RequestClientList();
                         return;
                     }
@@ -229,7 +233,7 @@ namespace BattleshipsClient
             string data = cmd.Data;
             int wins = int.Parse(data.Split(':')[0]);
             int losses = int.Parse(data.Split(':')[1]);
-            DialogResult dr = MessageBox.Show(cmd.SenderName + Environment.NewLine + "Wins: " + wins + Environment.NewLine + "Losses: " + losses + Environment.NewLine + "Challenge this user?", "Challenge a User", MessageBoxButtons.YesNo);
+            DialogResult dr = MessageBox.Show(i18n.GetText("ChallengeAUserRequest", cmd.SenderName, wins.ToString(), losses.ToString()), i18n.GetText("ChallengeAUsertitle"), MessageBoxButtons.YesNo);
             if (dr == DialogResult.Yes)
             {
                 Command responseCmd = new Command(CommandType.ChallengeRequest, cmd.SenderIP);
@@ -239,17 +243,17 @@ namespace BattleshipsClient
                 responseCmd.SenderPort = client.Port;
                 client.SendCommand(responseCmd);
                 activeChallenge = true;
-                rtbChat.AppendText("Challenge request sent to " + cmd.SenderName + "." + Environment.NewLine + "Waiting for a response..." + Environment.NewLine);
+                rtbChat.AppendText(i18n.GetText("challengeRequest", cmd.SenderName));
             }
             else
             {
-                rtbChat.AppendText("Challenge aborted." + Environment.NewLine);
+                rtbChat.AppendText(i18n.GetText("challengeRequestAborted"));
             }
         }
 
         private void ConnectionLost(object sender, EventArgs e)
         {
-            MessageBox.Show("Connection to server lost. Signing out...", "Connection Lost!", MessageBoxButtons.OK);
+            MessageBox.Show(i18n.GetText("connectionLost"), i18n.GetText("connectionLostTitle"), MessageBoxButtons.OK);
             quitApplication = false;
             Close();
         }
@@ -298,5 +302,6 @@ namespace BattleshipsClient
             quitApplication = false;
             Close();
         }
+
     }
 }

@@ -28,6 +28,7 @@ namespace BattleshipsClient
                    {"shipName4","Kreuzer" },
                    {"shipName5","Schlachtschiff" },
                    {"shipPlaced","Plaziert!" },
+                   {"shipSelected","{0} ausgewählt" + Environment.NewLine + "Schiffslänge: {1} Kästchen" + Environment.NewLine },
                    {"buttonFire","Schuss !" },
                    {"buttonReset","Zurücksetzen" },
                    {"buttonSubmit","Spiel übermitteln" },
@@ -37,7 +38,7 @@ namespace BattleshipsClient
                    {"gameLog","Spielverlauf"},
                    {"formBattleShip","Schiffe versenken"},
                    {"welcomeMessage","Willkommen zu Schiffe versenken! Bitte setze Deine Schiffe in Dein Gewässer. Wähle das Schiff durch drücken des jeweiligen Buttons und klicke anschließend im Gewässer die Anfangs- und Endposition des Schiffes. " + Environment.NewLine},
-                   {"placementDescription","Schiffsposition festlegen:" + Environment.NewLine + "1) Schifftyp auswählen" + Environment.NewLine + "2) Klicke im eignen Gewässer die Anfangsposition... und Endposition des Schiffes" + Environment.NewLine + "3) und anschließend die Endposition des Schiffes" + Environment.NewLine + "4) Sind alle Schiffe platziert drücke \"Spiel übermitteln\"" + Environment.NewLine },
+                   {"placementDescription","Schiffsposition festlegen:" + Environment.NewLine + "1) Schifftyp auswählen" + Environment.NewLine + "2) Klicke im eignen Gewässer die Anfangsposition... " + Environment.NewLine + "3) und anschließend die Endposition des Schiffes" + Environment.NewLine + "4) Sind alle Schiffe platziert drücke \"Spiel übermitteln\"" + Environment.NewLine },
                    {"firstShotMe","Mach den ersten Schuss, wähle eine Postition im feindlichen Gewässer!" + Environment.NewLine },
                    {"firstShotEnemy","Der Gegner hat den ersten Schuss. Warte auf den Einschlag..." + Environment.NewLine },
                    {"shotHit","Du hast getroffen !!!" + Environment.NewLine},
@@ -49,9 +50,31 @@ namespace BattleshipsClient
                    {"wonCongratulations","Gratulation {0}, Du hast gewonnen!" + Environment.NewLine + "Wenn Du das Fenster schliesst wird das Spiel beendet."},
                    {"lossGame","{0} Du hast leider verloren." + Environment.NewLine + "Wenn Du das Fenster schliesst wird das Spiel beendet."},
                    {"invalidPlacement","Ungültige Plazierung eines Schiffes: {0} Versuchs nochmal."},
-                   {"invalidPlacementTitle","Ungültige Plazierung"}
-
-
+                   {"invalidPlacementTitle","Ungültige Plazierung"},
+                   {"chatFormTtile","Chat Raum" },
+                   {"signOut","Abmelden" },
+                   {"quit","Beenden" },
+                   {"connectionLost","Verbindung zu Server verloren... melde mich ab" },
+                   {"connectionLostTitle", "Verbindung  verloren!" },
+                   {"challengeRequest", "Schlachtanfrage an {0} gesendet." + Environment.NewLine + "Warte auf Antwort..." },
+                   {"challengeRequestAborted", "Schlachtanfrage abgebrochen." },
+                   {"ChallengeAUserRequest","{0}" + Environment.NewLine + "Gewonnene Schlachten: {1}" +  Environment.NewLine + "Verlorene Schlachten: {2}"  + Environment.NewLine + "Herausforderung annehmen ?"},
+                   {"ChallengeAUsertitle", "Benutzer herausfordern" },
+                   {"userNotFound", "Benutzer nicht gefunden! Bitte Liste aktualisieren..." },
+                   {"userNotFoundTitle", "Fehler - Benutzer nicht gefunden!" },
+                   {"ChallengeRejected", "Deine Spieleanfrage wurde abgelehnt" +Environment.NewLine},
+                   {"yourWins", "Gewonnen: {0}" },
+                   {"yourLosses", "Verloren: {0}" },
+                   {"ChallengeRequest", "{0} hat Dich zur Schlacht herausgefordert!" + Environment.NewLine 
+                        + "Gewonnene Schlachten: : {1}" + Environment.NewLine
+                        + "Verlorene Schlachten: : {2}" +Environment.NewLine
+                        + "Willst Du annehmen ? " },
+                   {"ChallengeRequestTitle","Du bist herausgefordert worden !" },
+                   {"userHasDisconected", "{0} hat die Verbindung getrennt." + Environment.NewLine },
+                   {"userHasConnected", "{0} hat sich verbunden." + Environment.NewLine },
+                   {"challenge", "Herausfordern!"},
+                   {"sendMessage", "Senden!"},
+                   {"connectedUsers", "Verbundene Benutzer"}
                }
             },
             {
@@ -63,6 +86,7 @@ namespace BattleshipsClient
                    {"shipName4","Battleship" },
                    {"shipName5","Carrier" },
                    {"shipPlaced","Placed!" },
+                   {"shipSelected","{0} selected" + Environment.NewLine + "Ship length: {1} grid squares" + Environment.NewLine},
                    {"buttonFire","Fire !" },
                    {"buttonReset","Reset" },
                    {"buttonSubmit","Submit game" },
@@ -84,7 +108,31 @@ namespace BattleshipsClient
                    {"wonCongratulations","Congratulations {0} you have won the game!" + Environment.NewLine + "Closing this dialog will close the game window."},
                    {"lossGame","Sorry {0} you have lost the game." + Environment.NewLine + "Closing this dialog will close the game window."},
                    {"invalidPlacement","Invalid ship placement: {0} Please try again."},
-                   {"invalidPlacementTitle","Invalid Placement"}
+                   {"invalidPlacementTitle","Invalid Placement"},
+                   {"chatFormTtile","Chat Raum" },
+                   {"signOut","Sign Out" },
+                   {"quit","Quit" },
+                   {"connectionLost","Connection to server lost. Signing out..." },
+                   {"connectionLostTitle", "Connection Lost!" },
+                   {"challengeRequest", "Challenge request sent to {0}." + Environment.NewLine + "Waiting for a response..." },
+                   {"challengeRequestAborted", "Challenge aborted."  },
+                   {"ChallengeAUserRequest","{0}" + Environment.NewLine + "Wins: {1}" + Environment.NewLine + "Losses: {2}" + Environment.NewLine + "Challenge this user?"},
+                   {"ChallengeAUsertitle", "Challenge a User" },
+                   {"userNotFound", "User could not be found! Refreshing user list..." },
+                   {"userNotFoundTitle", "Error - User Not Found!" },
+                   {"ChallengeRejected", "Your game challenge was rejected."+Environment.NewLine },
+                   {"yourWins", "Your Wins: {0}" },
+                   {"yourLosses", "Your Losses: {0}" },
+                   {"ChallengeRequest", "{0} has challenged you!" + Environment.NewLine 
+                        + "Wins: {1}" + Environment.NewLine
+                        + "Losses: {2}" +  Environment.NewLine
+                        + "Do You accept?" },
+                    {"ChallengeRequestTitle","You have been challenged!" },
+                    {"userHasDisconected", "{0} has disconnected." + Environment.NewLine },
+                    {"userHasConnected", "{0} has connected." + Environment.NewLine},
+                    {"challenge", "Challenge!"},
+                    {"sendMessage", "Send"},
+                    {"connectedUsers", "Connected Users"}
                }
             }
         };
@@ -156,6 +204,31 @@ namespace BattleshipsClient
                 if (TextTable[Defaultlanguage].ContainsKey(textname))
                 {
                     return (string.Format(TextTable[Defaultlanguage][textname], TextVariable1, TextVariable2));
+                }
+                else
+                {
+                    throw new Exception("Requested text not found in TextTable");
+                }
+            }
+        }
+        public static string GetText(string textname, string TextVariable1, string TextVariable2, string TextVariable3)
+        {
+            if (TextTable.ContainsKey(Language))
+            {
+                if (TextTable[Language].ContainsKey(textname))
+                {
+                    return (string.Format(TextTable[Language][textname], TextVariable1, TextVariable2, TextVariable3));
+                }
+                else
+                {
+                    throw new Exception("Requested text not found in TextTable");
+                }
+            }
+            else
+            {
+                if (TextTable[Defaultlanguage].ContainsKey(textname))
+                {
+                    return (string.Format(TextTable[Defaultlanguage][textname], TextVariable1, TextVariable2, TextVariable3));
                 }
                 else
                 {

@@ -86,6 +86,7 @@
             this.btnCarrier = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnFire = new System.Windows.Forms.Button();
+            this.checkBoxSound = new System.Windows.Forms.CheckBox();
             this.OpPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.MyPanel.SuspendLayout();
@@ -312,9 +313,8 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.surrenderToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(943, 24);
@@ -326,6 +326,7 @@
             this.surrenderToolStripMenuItem.Name = "surrenderToolStripMenuItem";
             this.surrenderToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.surrenderToolStripMenuItem.Text = "Surrender";
+            this.surrenderToolStripMenuItem.Visible = false;
             // 
             // MyPanel
             // 
@@ -667,11 +668,24 @@
             this.btnFire.Visible = false;
             this.btnFire.Click += new System.EventHandler(this.btnFire_Click);
             // 
+            // checkBoxSound
+            // 
+            this.checkBoxSound.AutoSize = true;
+            this.checkBoxSound.Checked = true;
+            this.checkBoxSound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSound.Location = new System.Drawing.Point(863, 322);
+            this.checkBoxSound.Name = "checkBoxSound";
+            this.checkBoxSound.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxSound.TabIndex = 17;
+            this.checkBoxSound.Text = "Sound";
+            this.checkBoxSound.UseVisualStyleBackColor = true;
+            // 
             // BattleshipGameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(943, 348);
+            this.Controls.Add(this.checkBoxSound);
             this.Controls.Add(this.btnFire);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnCarrier);
@@ -761,5 +775,6 @@
         private System.Windows.Forms.Button btnCarrier;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnFire;
+        private System.Windows.Forms.CheckBox checkBoxSound;
     }
 }

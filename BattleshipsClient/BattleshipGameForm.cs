@@ -48,6 +48,8 @@ namespace BattleshipsClient
                 {
                     myTurn = true;
                     rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("firstShotMe")); ; });
+                    btnFire.BackColor = System.Drawing.Color.Red;
+                    btnFire.ForeColor = System.Drawing.Color.White;
                     //btnFire.Enabled = true;
                 }
                 else if (e.Command.Data.ToLower() == "false")
@@ -94,6 +96,8 @@ namespace BattleshipsClient
                 pictureBox.Image = Properties.Resources.ShipHit;
                 myTurn = true;
                 rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("turnToShot")); ; });
+                btnFire.BackColor = System.Drawing.Color.Red;
+                btnFire.ForeColor = System.Drawing.Color.White;
 
             }
             if (e.Command.CommandType == CommandType.GameMissInform)
@@ -105,6 +109,8 @@ namespace BattleshipsClient
                 pictureBox.Image = Properties.Resources.WaterMiss;
                 myTurn = true;
                 rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("turnToShot")); ; });
+                btnFire.BackColor = System.Drawing.Color.Red;
+                btnFire.ForeColor = System.Drawing.Color.White;
             }
             if (e.Command.CommandType == CommandType.GameOverInform)
             {
@@ -732,6 +738,8 @@ namespace BattleshipsClient
                 cmd.SenderPort = client.Port;
                 client.SendCommand(cmd);
                 rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shotAt", GetShotHumanReadablePosition(gridTarget.x,gridTarget.y))); ; });
+                btnFire.BackColor = System.Drawing.SystemColors.Control;
+                btnFire.ForeColor = System.Drawing.SystemColors.ControlText;
             }
         }
 

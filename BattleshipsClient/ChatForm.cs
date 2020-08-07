@@ -34,7 +34,7 @@ namespace BattleshipsClient
             lblLosses.Text = i18n.GetText("yourLosses", this.client.Losses.ToString());
             btnChallenge.Text = i18n.GetText("challenge");
             btnSend.Text= i18n.GetText("sendMessage");
-            this.Text = i18n.GetText("chatFormTtile");
+            this.Text = i18n.GetText("chatFormTtile") + " - " +client.Username;
             exitToolStripMenuItem.Text = i18n.GetText("signOut");
             label1.Text= i18n.GetText("connectedUsers");
             quitToolStripMenuItem.Text = i18n.GetText("quit");

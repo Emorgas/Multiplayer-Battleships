@@ -57,7 +57,14 @@ namespace BattleshipsClient
 
         private void ConnectionSuccessful(object sender, EventArgs e)
         {
-
+            Properties.Settings.Default["LastLogin"] = txtUsername.Text;
+            Properties.Settings.Default["ServerIP"]= txtServerIP.Text;
+            try
+            {
+                Properties.Settings.Default["ServerPort"] = System.Convert.ToInt32(txtServerPort.Text);
+            }
+            catch { }
+            Properties.Settings.Default.Save();
         }
 
         private void ConnectionUnsuccessful(object sender, EventArgs e)
@@ -73,6 +80,13 @@ namespace BattleshipsClient
             label3.Text= i18n.GetText("labelServerport");
             btnLogin.Text=i18n.GetText("login");
             btnQuit.Text = i18n.GetText("quit");
+            txtUsername.Text=(string)Properties.Settings.Default["LastLogin"];
+            txtServerIP.Text = (string)Properties.Settings.Default["ServerIP"];
+            try
+            {
+                txtServerPort.Text = (string)Properties.Settings.Default["ServerPort"];
+            }
+            catch { }
         }
 
 

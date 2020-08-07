@@ -47,6 +47,7 @@ namespace BattleshipsClient
             spFlightBomb = new SoundPlayer(FlightBombStream);
             FlightWaterStream = Properties.Resources.FlightWater;
             spFlightWater = new SoundPlayer(FlightWaterStream);
+            checkBoxSound.Checked=(bool)Properties.Settings.Default["EnabledSound"];
 
         }
 
@@ -841,6 +842,12 @@ namespace BattleshipsClient
         private void BattleshipGameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             client.CommandRecieved -= GameCommandRecieved;
+        }
+
+        private void checkBoxSound_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["EnabledSound"] = checkBoxSound.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

@@ -679,6 +679,7 @@
             this.checkBoxSound.TabIndex = 17;
             this.checkBoxSound.Text = "Sound";
             this.checkBoxSound.UseVisualStyleBackColor = true;
+            this.checkBoxSound.CheckedChanged += new System.EventHandler(this.checkBoxSound_CheckedChanged);
             // 
             // BattleshipGameForm
             // 

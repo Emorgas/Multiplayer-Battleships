@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using CommandUtils;
 namespace BattleshipsClient
@@ -116,7 +117,7 @@ namespace BattleshipsClient
                     cmdInform.SenderName = client.Username;
                     client.Wins++;
                     client.SendCommand(cmdInform);
-                    MessageBox.Show(i18n.GetText("wonCongratulations", client.Username) , "Winner!", MessageBoxButtons.OK);
+                    MessageBox.Show(i18n.GetText("wonCongratulations", client.Username) , i18n.GetText("winner"), MessageBoxButtons.OK);
                     Close();
                 }
                 else if (e.Command.Data.ToLower() == "loss")
@@ -128,7 +129,7 @@ namespace BattleshipsClient
                     cmdInform.SenderName = client.Username;
                     client.Losses++;
                     client.SendCommand(cmdInform);
-                    MessageBox.Show(i18n.GetText("lossGame", client.Username), "Game Lost", MessageBoxButtons.OK);
+                    MessageBox.Show(i18n.GetText("lossGame", client.Username), i18n.GetText("gameLost"), MessageBoxButtons.OK);
                     Close();
 
                 }
@@ -153,7 +154,7 @@ namespace BattleshipsClient
             label42.Text= i18n.GetText("EnemyWater");
             label41.Text= i18n.GetText("FriendlyWater");
             label43.Text = i18n.GetText("gameLog");
-            this.Name = i18n.GetText("formBattleShip");
+            this.Text = i18n.GetText("formBattleShip");
         }
 
         private void InitGrid(TableLayoutPanel grid)
@@ -691,7 +692,7 @@ namespace BattleshipsClient
             cmd.SenderPort = client.Port;
             cmd.SenderName = client.Username;
             client.SendCommand(cmd);
-            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Ship placement sent to server. Waiting for other player..." + Environment.NewLine); ; });
+            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipPlacementSend")); ; });
             //Submit Button
             btnSubmit.Enabled = false;
             btnSubmit.Visible = false;
@@ -716,7 +717,10 @@ namespace BattleshipsClient
             //Fire Button
             btnFire.Visible = true;
         }
-
+        private string GetShotHumanReadablePosition(int x, int y)
+        {
+            return (System.Convert.ToChar(0x41 + y).ToString() + " " + (x + 1).ToString());
+        }
         private void btnFire_Click(object sender, EventArgs e)
         {
             if (gridTarget.x > -1 && gridTarget.y > -1)
@@ -727,7 +731,7 @@ namespace BattleshipsClient
                 cmd.SenderName = client.Username;
                 cmd.SenderPort = client.Port;
                 client.SendCommand(cmd);
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shotAt", GetShotHumanReadablePosition(gridTarget.x,gridTarget.y))); ; });
             }
         }
 

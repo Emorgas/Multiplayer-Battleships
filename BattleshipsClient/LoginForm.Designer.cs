@@ -50,7 +50,7 @@
             // 
             // btnQuit
             // 
-            this.btnQuit.Location = new System.Drawing.Point(152, 90);
+            this.btnQuit.Location = new System.Drawing.Point(167, 90);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(102, 23);
             this.btnQuit.TabIndex = 4;
@@ -69,14 +69,14 @@
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(76, 64);
+            this.txtUsername.Location = new System.Drawing.Point(91, 64);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(178, 20);
             this.txtUsername.TabIndex = 2;
             // 
             // txtServerIP
             // 
-            this.txtServerIP.Location = new System.Drawing.Point(76, 12);
+            this.txtServerIP.Location = new System.Drawing.Point(91, 12);
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(178, 20);
             this.txtServerIP.TabIndex = 0;
@@ -92,7 +92,7 @@
             // 
             // txtServerPort
             // 
-            this.txtServerPort.Location = new System.Drawing.Point(76, 38);
+            this.txtServerPort.Location = new System.Drawing.Point(91, 38);
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(178, 20);
             this.txtServerPort.TabIndex = 1;
@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(275, 121);
+            this.ClientSize = new System.Drawing.Size(295, 121);
             this.Controls.Add(this.txtServerPort);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtServerIP);

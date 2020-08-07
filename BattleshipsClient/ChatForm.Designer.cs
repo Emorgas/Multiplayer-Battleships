@@ -131,7 +131,7 @@
             // lblWins
             // 
             this.lblWins.AutoSize = true;
-            this.lblWins.Location = new System.Drawing.Point(12, 34);
+            this.lblWins.Location = new System.Drawing.Point(23, 34);
             this.lblWins.Name = "lblWins";
             this.lblWins.Size = new System.Drawing.Size(68, 13);
             this.lblWins.TabIndex = 7;

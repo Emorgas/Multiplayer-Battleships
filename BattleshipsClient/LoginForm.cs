@@ -29,7 +29,7 @@ namespace BattleshipsClient
                 if (e.Command.Data.ToLower() == "false")
                 {
                     client.SignOut();
-                    MessageBox.Show("Username already in use!", "Invalid Username", MessageBoxButtons.OK);
+                    MessageBox.Show(i18n.GetText("userNameInUse"), i18n.GetText("invalidUsernameTitle"), MessageBoxButtons.OK);
                     client.Disconnect();
 
                 }
@@ -62,12 +62,17 @@ namespace BattleshipsClient
 
         private void ConnectionUnsuccessful(object sender, EventArgs e)
         {
-            MessageBox.Show("Connection Failed, please check server details and ensure server is running correctly", "No Response From Server", MessageBoxButtons.OK);
+            MessageBox.Show(i18n.GetText("serverConnectionFailed"),i18n.GetText("servernoresponse"), MessageBoxButtons.OK);
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-
+            this.Text = i18n.GetText("loginFormTitle");
+            label1.Text = i18n.GetText("labelUsername");
+            label2.Text = i18n.GetText("labelServerIP");
+            label3.Text= i18n.GetText("labelServerport");
+            btnLogin.Text=i18n.GetText("login");
+            btnQuit.Text = i18n.GetText("quit");
         }
 
 
@@ -75,11 +80,11 @@ namespace BattleshipsClient
         {
             if (txtServerIP.Text.Trim() == "")
             {
-                MessageBox.Show("IP field is blank!", "Invalid IP", MessageBoxButtons.OK);
+                MessageBox.Show(i18n.GetText("FieldBlank", i18n.GetText("labelServerIP")), i18n.GetText("invalidIP"), MessageBoxButtons.OK);
             }
             else if (txtServerPort.Text.Trim() == "")
             {
-                MessageBox.Show("Port field is blank!", "Invalid Port", MessageBoxButtons.OK);
+                MessageBox.Show(i18n.GetText("FieldBlank", i18n.GetText("labelServerport")), i18n.GetText("invalidPort"), MessageBoxButtons.OK);
             }
             else
             {
@@ -95,7 +100,7 @@ namespace BattleshipsClient
         {
             if (txtUsername.Text.Trim() == "")
             {
-                MessageBox.Show("Username field is blank!", "Invalid Username", MessageBoxButtons.OK);
+                MessageBox.Show(i18n.GetText("FieldBlank", i18n.GetText("labelUsername")), i18n.GetText("invalidusername"), MessageBoxButtons.OK);
             }
             else
             {

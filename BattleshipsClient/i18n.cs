@@ -48,7 +48,11 @@ namespace BattleshipsClient
                    {"turnToShot","Du bist dran mit schiessen" + Environment.NewLine},
                    {"opponentMissedFleet","Dein Gegner hat mit dem Schuss die Flotte verfehlt!" + Environment.NewLine},
                    {"wonCongratulations","Gratulation {0}, Du hast gewonnen!" + Environment.NewLine + "Wenn Du das Fenster schliesst wird das Spiel beendet."},
+                   {"shipPlacementSend","Schiffplazierungen übermittelt. Warte auf den Gegner..." + Environment.NewLine},
                    {"lossGame","{0} Du hast leider verloren." + Environment.NewLine + "Wenn Du das Fenster schliesst wird das Spiel beendet."},
+                   {"winner","Gewinner!" },
+                   {"gameLost","Schlacht verloren!" },
+                   {"shotAt","Schuss auf {0} abgegeben"+ Environment.NewLine},
                    {"invalidPlacement","Ungültige Plazierung eines Schiffes: {0} Versuchs nochmal."},
                    {"invalidPlacementTitle","Ungültige Plazierung"},
                    {"chatFormTtile","Chat Raum" },
@@ -74,7 +78,20 @@ namespace BattleshipsClient
                    {"userHasConnected", "{0} hat sich verbunden." + Environment.NewLine },
                    {"challenge", "Herausfordern!"},
                    {"sendMessage", "Senden!"},
-                   {"connectedUsers", "Verbundene Benutzer"}
+                   {"connectedUsers", "Verbundene Benutzer"},
+                   {"loginFormTitle", "Anmeldung"},
+                   {"labelServerIP", "Server IP:"},
+                   {"labelServerport", "Server Port:"},
+                   {"labelUsername", "Benutzername:"},
+                   {"login", "Anmelden"},
+                   {"invalidUsernameTitle","Ungültiger Benutzername"},
+                   {"userNameInUse", "Den Benutzername gibt es schon. Bitte einen anderen verwenden!"},
+                   {"serverConnectionFailed","Verbindung zum Server fehlgeschlagen, bitte überprüfen ob der Server gestartet ist bzw. läuft!" },
+                   {"servernoresponse","Keine Antwort vom Server"},
+                   {"FieldBlank","Das {0} Feld ist leer"},
+                   {"invalidIP","Ungültige IP Adresse" },
+                   {"invalidPort","Ungültiger Port" },
+                   {"invalidusername","Ungültiger Benutzername" }
                }
             },
             {
@@ -106,7 +123,11 @@ namespace BattleshipsClient
                    {"turnToShot","It is your turn to shoot." + Environment.NewLine},
                    {"opponentMissedFleet","Your opponent missed your fleet!" + Environment.NewLine},
                    {"wonCongratulations","Congratulations {0} you have won the game!" + Environment.NewLine + "Closing this dialog will close the game window."},
+                   {"shipPlacementSend","Ship placement sent to server. Waiting for other player..."+ Environment.NewLine },
                    {"lossGame","Sorry {0} you have lost the game." + Environment.NewLine + "Closing this dialog will close the game window."},
+                   {"winner","Winner!" },
+                   {"gameLost","Game lost!" },
+                   {"shotAt","Shot fired at:  {0}"+ Environment.NewLine},
                    {"invalidPlacement","Invalid ship placement: {0} Please try again."},
                    {"invalidPlacementTitle","Invalid Placement"},
                    {"chatFormTtile","Chat Raum" },
@@ -132,7 +153,20 @@ namespace BattleshipsClient
                     {"userHasConnected", "{0} has connected." + Environment.NewLine},
                     {"challenge", "Challenge!"},
                     {"sendMessage", "Send"},
-                    {"connectedUsers", "Connected Users"}
+                    {"connectedUsers", "Connected Users"},
+                    {"loginFormTitle", "Login"},
+                    {"labelServerIP", "Server IP:"},
+                    {"labelServerport", "Server Port:"},
+                    {"labelUsername", "Username:"},
+                    {"login", "Login"},
+                    {"invalidUsernameTitle","Invalid Username"},
+                    {"userNameInUse", "Den Benutzername gibt es schon. Bitte einen anderen verwenden!"},
+                    {"serverConnectionFailed","Connection Failed, please check server details and ensure server is running correctly" },
+                    {"servernoresponse","No Response From Server"},
+                    {"FieldBlank","{0} field is blank!"},
+                    {"invalidIP","Invalid IP Adresse" },
+                    {"invalidPort","Invalid Port" },
+                    {"invalidusername","Invalid Username" }
                }
             }
         };

@@ -86,6 +86,7 @@
             this.btnCarrier = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnFire = new System.Windows.Forms.Button();
+            this.checkBoxSound = new System.Windows.Forms.CheckBox();
             this.OpPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.MyPanel.SuspendLayout();
@@ -312,12 +313,11 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.surrenderToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(765, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(943, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -326,6 +326,7 @@
             this.surrenderToolStripMenuItem.Name = "surrenderToolStripMenuItem";
             this.surrenderToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.surrenderToolStripMenuItem.Text = "Surrender";
+            this.surrenderToolStripMenuItem.Visible = false;
             // 
             // MyPanel
             // 
@@ -566,10 +567,11 @@
             // 
             // rtbLog
             // 
+            this.rtbLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.rtbLog.Location = new System.Drawing.Point(573, 40);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(188, 272);
+            this.rtbLog.Size = new System.Drawing.Size(358, 272);
             this.rtbLog.TabIndex = 6;
             this.rtbLog.Text = "";
             this.rtbLog.TextChanged += new System.EventHandler(this.rtbLog_TextChanged);
@@ -577,7 +579,7 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(630, 24);
+            this.label43.Location = new System.Drawing.Point(572, 24);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(59, 13);
             this.label43.TabIndex = 7;
@@ -586,9 +588,9 @@
             // btnSubmit
             // 
             this.btnSubmit.Enabled = false;
-            this.btnSubmit.Location = new System.Drawing.Point(495, 318);
+            this.btnSubmit.Location = new System.Drawing.Point(575, 318);
             this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(75, 23);
+            this.btnSubmit.Size = new System.Drawing.Size(179, 23);
             this.btnSubmit.TabIndex = 14;
             this.btnSubmit.Text = "Submit";
             this.btnSubmit.UseVisualStyleBackColor = true;
@@ -598,7 +600,7 @@
             // 
             this.btnDestroyer.Location = new System.Drawing.Point(9, 318);
             this.btnDestroyer.Name = "btnDestroyer";
-            this.btnDestroyer.Size = new System.Drawing.Size(75, 23);
+            this.btnDestroyer.Size = new System.Drawing.Size(88, 23);
             this.btnDestroyer.TabIndex = 9;
             this.btnDestroyer.Text = "Destroyer";
             this.btnDestroyer.UseVisualStyleBackColor = true;
@@ -606,9 +608,9 @@
             // 
             // btnCruiser
             // 
-            this.btnCruiser.Location = new System.Drawing.Point(90, 318);
+            this.btnCruiser.Location = new System.Drawing.Point(103, 318);
             this.btnCruiser.Name = "btnCruiser";
-            this.btnCruiser.Size = new System.Drawing.Size(75, 23);
+            this.btnCruiser.Size = new System.Drawing.Size(88, 23);
             this.btnCruiser.TabIndex = 10;
             this.btnCruiser.Text = "Cruiser";
             this.btnCruiser.UseVisualStyleBackColor = true;
@@ -616,9 +618,9 @@
             // 
             // btnSubmarine
             // 
-            this.btnSubmarine.Location = new System.Drawing.Point(171, 318);
+            this.btnSubmarine.Location = new System.Drawing.Point(198, 318);
             this.btnSubmarine.Name = "btnSubmarine";
-            this.btnSubmarine.Size = new System.Drawing.Size(75, 23);
+            this.btnSubmarine.Size = new System.Drawing.Size(88, 23);
             this.btnSubmarine.TabIndex = 11;
             this.btnSubmarine.Text = "Submarine";
             this.btnSubmarine.UseVisualStyleBackColor = true;
@@ -626,9 +628,9 @@
             // 
             // btnBattleship
             // 
-            this.btnBattleship.Location = new System.Drawing.Point(252, 318);
+            this.btnBattleship.Location = new System.Drawing.Point(292, 318);
             this.btnBattleship.Name = "btnBattleship";
-            this.btnBattleship.Size = new System.Drawing.Size(75, 23);
+            this.btnBattleship.Size = new System.Drawing.Size(88, 23);
             this.btnBattleship.TabIndex = 12;
             this.btnBattleship.Text = "Battleship";
             this.btnBattleship.UseVisualStyleBackColor = true;
@@ -636,9 +638,9 @@
             // 
             // btnCarrier
             // 
-            this.btnCarrier.Location = new System.Drawing.Point(333, 318);
+            this.btnCarrier.Location = new System.Drawing.Point(387, 318);
             this.btnCarrier.Name = "btnCarrier";
-            this.btnCarrier.Size = new System.Drawing.Size(75, 23);
+            this.btnCarrier.Size = new System.Drawing.Size(88, 23);
             this.btnCarrier.TabIndex = 13;
             this.btnCarrier.Text = "Carrier";
             this.btnCarrier.UseVisualStyleBackColor = true;
@@ -646,9 +648,9 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(414, 318);
+            this.btnReset.Location = new System.Drawing.Point(481, 318);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.Size = new System.Drawing.Size(88, 23);
             this.btnReset.TabIndex = 15;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -657,7 +659,7 @@
             // btnFire
             // 
             this.btnFire.Enabled = false;
-            this.btnFire.Location = new System.Drawing.Point(62, 318);
+            this.btnFire.Location = new System.Drawing.Point(52, 318);
             this.btnFire.Name = "btnFire";
             this.btnFire.Size = new System.Drawing.Size(467, 23);
             this.btnFire.TabIndex = 16;
@@ -666,11 +668,25 @@
             this.btnFire.Visible = false;
             this.btnFire.Click += new System.EventHandler(this.btnFire_Click);
             // 
+            // checkBoxSound
+            // 
+            this.checkBoxSound.AutoSize = true;
+            this.checkBoxSound.Checked = true;
+            this.checkBoxSound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSound.Location = new System.Drawing.Point(863, 322);
+            this.checkBoxSound.Name = "checkBoxSound";
+            this.checkBoxSound.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxSound.TabIndex = 17;
+            this.checkBoxSound.Text = "Sound";
+            this.checkBoxSound.UseVisualStyleBackColor = true;
+            this.checkBoxSound.CheckedChanged += new System.EventHandler(this.checkBoxSound_CheckedChanged);
+            // 
             // BattleshipGameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(765, 348);
+            this.ClientSize = new System.Drawing.Size(943, 348);
+            this.Controls.Add(this.checkBoxSound);
             this.Controls.Add(this.btnFire);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnCarrier);
@@ -760,5 +776,6 @@
         private System.Windows.Forms.Button btnCarrier;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnFire;
+        private System.Windows.Forms.CheckBox checkBoxSound;
     }
 }

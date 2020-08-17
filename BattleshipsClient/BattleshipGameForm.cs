@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Media;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using CommandUtils;
 namespace BattleshipsClient
@@ -22,6 +24,10 @@ namespace BattleshipsClient
         private Ship submarine;
         private Ship battleship;
         private Ship carrier;
+        private System.IO.Stream FlightBombStream;
+        private System.IO.Stream FlightWaterStream;
+        SoundPlayer spFlightBomb;
+        SoundPlayer spFlightWater;
 
         public BattleshipGameForm(ref LocalClient client, int ID)
         {
@@ -36,6 +42,13 @@ namespace BattleshipsClient
             this.client.CommandRecieved += new CommandRecievedEventHandler(GameCommandRecieved);
             gameID = ID;
             gridTarget = new GridPosition(-1, -1);
+            checkBoxSound.Text = i18n.GetText("sound");
+            FlightBombStream = Properties.Resources.FlightBomb;
+            spFlightBomb = new SoundPlayer(FlightBombStream);
+            FlightWaterStream = Properties.Resources.FlightWater;
+            spFlightWater = new SoundPlayer(FlightWaterStream);
+            checkBoxSound.Checked=(bool)Properties.Settings.Default["EnabledSound"];
+
         }
 
         public void GameCommandRecieved(object sender, CommandEventArgs e)
@@ -46,14 +59,16 @@ namespace BattleshipsClient
                 if (e.Command.Data.ToLower() == "true")
                 {
                     myTurn = true;
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("It is your turn to shoot first, please select a position within enemy waters" + Environment.NewLine); ; });
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("firstShotMe")); ; });
+                    btnFire.BackColor = System.Drawing.Color.Red;
+                    btnFire.ForeColor = System.Drawing.Color.White;
                     //btnFire.Enabled = true;
                 }
                 else if (e.Command.Data.ToLower() == "false")
                 {
                     myTurn = false;
                     btnFire.Enabled = false;
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("It is your opponent's turn to shoot first. Waiting for response..." + Environment.NewLine); ; });
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("firstShotEnemy")); ; });
 
                 }
             }
@@ -62,48 +77,136 @@ namespace BattleshipsClient
                 if (e.Command.Data.ToLower().Equals("hit"))
                 {
                     //Deal with hits
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Your shot hit!" + Environment.NewLine); ; });
-                    pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
-                    pictureBox.Image = Properties.Resources.ShipHit;
-                    pictureBox.Tag = "ShipHit";
-                    btnFire.Enabled = false;
-                    myTurn = false;
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () {rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine); ; });
+                    // Don't block Thread with waiting until Sound finishs
+                    new System.Threading.Thread(() =>
+                    {
+                        if (checkBoxSound.Checked)
+                            spFlightBomb.PlaySync();
 
+                        rtbLog.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            rtbLog.AppendText(i18n.GetText("shotHit"));
+                        });
+
+                        pictureBox.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
+                            pictureBox.Image = Properties.Resources.ShipHit;
+                            pictureBox.Tag = "ShipHit";
+                        });
+
+                        btnFire.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            btnFire.Enabled = false;
+                        });
+
+                        myTurn = false;
+
+                        rtbLog.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            rtbLog.AppendText(i18n.GetText("waitEnemyShot")); ;
+                        });
+                    }).Start();
                 }
                 else if (e.Command.Data.ToLower().Equals("miss"))
                 {
                     //deal with misses
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Your shot missed!" + Environment.NewLine); ; });
-                    pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
-                    pictureBox.Image = Properties.Resources.WaterMiss;
-                    pictureBox.Tag = "WaterMiss";
-                    btnFire.Enabled = false;
-                    myTurn = false;
-                    rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("It is your opponent's turn to shoot." + Environment.NewLine); ; });
+                    // Don't block Thread with waiting until Sound finishs
+                    new System.Threading.Thread(() =>
+                    {
+                        if (checkBoxSound.Checked)
+                            spFlightWater.PlaySync();
 
+                        rtbLog.BeginInvoke((MethodInvoker)delegate () 
+                        { 
+                            rtbLog.AppendText(i18n.GetText("shotMissed")); 
+                        });
+
+                        pictureBox.BeginInvoke((MethodInvoker)delegate ()
+                        { 
+                            pictureBox = (PictureBox)EnemyGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
+                            pictureBox.Image = Properties.Resources.WaterMiss;
+                            pictureBox.Tag = "WaterMiss";
+                        });
+                        btnFire.BeginInvoke((MethodInvoker)delegate () {
+                                btnFire.Enabled = false;
+                        });
+
+                        myTurn = false;
+
+                        rtbLog.BeginInvoke((MethodInvoker)delegate () {
+                            rtbLog.AppendText(i18n.GetText("waitEnemyShot")); ; 
+                        });
+                    }).Start();
                 }
             }
             if (e.Command.CommandType == CommandType.GameHitInform)
             {
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("One of your ships has been hit!" + Environment.NewLine); ; });
-                gridTarget.x = int.Parse(e.Command.Data.Split(',')[0]);
-                gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
-                pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
-                pictureBox.Image = Properties.Resources.ShipHit;
-                myTurn = true;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("It is your turn to shoot." + Environment.NewLine); ; });
+                // Don't block Thread with waiting until Sound finishs
+                new System.Threading.Thread(() =>
+                {
+                    if (checkBoxSound.Checked)
+                        spFlightBomb.PlaySync();
 
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () { 
+                        rtbLog.AppendText(i18n.GetText("oneShipHit")); 
+                    });
+
+                    gridTarget.x = int.Parse(e.Command.Data.Split(',')[0]);
+                    gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
+
+                    pictureBox.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
+                        pictureBox.Image = Properties.Resources.ShipHit;
+                    });
+
+                    myTurn = true;
+
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () { 
+                        rtbLog.AppendText(i18n.GetText("turnToShot")); 
+                    });
+
+                    btnFire.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        btnFire.BackColor = System.Drawing.Color.Red;
+                        btnFire.ForeColor = System.Drawing.Color.White;
+                    });
+                }).Start();
             }
             if (e.Command.CommandType == CommandType.GameMissInform)
             {
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Your opponent missed your fleet!" + Environment.NewLine); ; });
-                gridTarget.x = int.Parse(e.Command.Data.Split(',')[0]);
-                gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
-                pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
-                pictureBox.Image = Properties.Resources.WaterMiss;
-                myTurn = true;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("It is your turn to shoot." + Environment.NewLine); ; });
+                // Don't block Thread with waiting until Sound finishs
+                new System.Threading.Thread(() =>
+                {
+                    if (checkBoxSound.Checked)
+                        spFlightWater.PlaySync();
+
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () { 
+                        rtbLog.AppendText(i18n.GetText("opponentMissedFleet")); 
+                    });
+
+                    gridTarget.x = int.Parse(e.Command.Data.Split(',')[0]);
+                    gridTarget.y = int.Parse(e.Command.Data.Split(',')[1]);
+
+                    pictureBox.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        pictureBox = (PictureBox)PlayerGrid.GetControlFromPosition(gridTarget.x, gridTarget.y);
+                        pictureBox.Image = Properties.Resources.WaterMiss;
+                    });
+
+                    myTurn = true;
+
+                    rtbLog.BeginInvoke((MethodInvoker)delegate () {
+                        rtbLog.AppendText(i18n.GetText("turnToShot")); 
+                    });
+
+                    btnFire.BeginInvoke((MethodInvoker)delegate ()
+                    {
+                        btnFire.BackColor = System.Drawing.Color.Red;
+                        btnFire.ForeColor = System.Drawing.Color.White;
+                    });
+                }).Start();
             }
             if (e.Command.CommandType == CommandType.GameOverInform)
             {
@@ -116,7 +219,7 @@ namespace BattleshipsClient
                     cmdInform.SenderName = client.Username;
                     client.Wins++;
                     client.SendCommand(cmdInform);
-                    MessageBox.Show("Congratulations " + client.Username + " you have won the game!" + Environment.NewLine + "Closing this dialog will close the game window.", "Winner!", MessageBoxButtons.OK);
+                    MessageBox.Show(i18n.GetText("wonCongratulations", client.Username) , i18n.GetText("winner"), MessageBoxButtons.OK);
                     Close();
                 }
                 else if (e.Command.Data.ToLower() == "loss")
@@ -128,7 +231,7 @@ namespace BattleshipsClient
                     cmdInform.SenderName = client.Username;
                     client.Losses++;
                     client.SendCommand(cmdInform);
-                    MessageBox.Show("Sorry " + client.Username + " you have lost the game." + Environment.NewLine + "Closing this dialog will close the game window.", "Game Lost", MessageBoxButtons.OK);
+                    MessageBox.Show(i18n.GetText("lossGame", client.Username), i18n.GetText("gameLost"), MessageBoxButtons.OK);
                     Close();
 
                 }
@@ -137,9 +240,23 @@ namespace BattleshipsClient
 
         private void BattleshipGameForm_Load(object sender, EventArgs e)
         {
-            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Welcome To Battleships! Please begin by placing your ships using the controls below the game board." + Environment.NewLine); ; });
-            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Ship Placement:" + Environment.NewLine + "1)Select a ship type" + Environment.NewLine + "2) Select a location for the front of your ship" + Environment.NewLine + "3) Select a location for the rear of your ship" + Environment.NewLine + "4) Once all ships have been placed, press the Submit button" + Environment.NewLine); ; });
+            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("welcomeMessage")); ; });
+            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("placementDescription")); ; });
             introString = rtbLog.Text;
+            // Load Control Text
+            btnDestroyer.Text = i18n.GetText("shipName1");
+            btnCruiser.Text = i18n.GetText("shipName2");
+            btnSubmarine.Text = i18n.GetText("shipName3");
+            btnBattleship.Text= i18n.GetText("shipName4");
+            btnCarrier.Text= i18n.GetText("shipName5");
+            btnReset.Text = i18n.GetText("buttonReset");
+            btnSubmit.Text= i18n.GetText("buttonSubmit");
+            btnFire.Text= i18n.GetText("buttonFire");
+            surrenderToolStripMenuItem.Text= i18n.GetText("toolMenuSurrender");
+            label42.Text= i18n.GetText("EnemyWater");
+            label41.Text= i18n.GetText("FriendlyWater");
+            label43.Text = i18n.GetText("gameLog");
+            this.Text = i18n.GetText("formBattleShip");
         }
 
         private void InitGrid(TableLayoutPanel grid)
@@ -237,7 +354,7 @@ namespace BattleshipsClient
                         shipPositions[0, 1] = new GridPosition(PlayerGrid.GetPositionFromControl(control).Column, PlayerGrid.GetPositionFromControl(control).Row);
                         if (PlaceShip(ShipType.Destroyer) == false)
                         {
-                            MessageBox.Show("Invalid ship placement: " + ShipType.Destroyer + " Please try again.", "Invalid Placement", MessageBoxButtons.OK);
+                            MessageBox.Show(i18n.GetText("invalidPlacement", i18n.GetText("shipName1")), i18n.GetText("invalidPlacementTitle"), MessageBoxButtons.OK);
                             shipPositions[0, 0] = null;
                             shipPositions[0, 1] = null;
                         }
@@ -249,7 +366,7 @@ namespace BattleshipsClient
                                 pictureBox.Image = Properties.Resources.Ship;
                             }
                             btnDestroyer.Enabled = false;
-                            btnDestroyer.Text = "Placed!";
+                            btnDestroyer.Text = i18n.GetText("shipPlaced");
                         }
                     }
                     break;
@@ -265,7 +382,7 @@ namespace BattleshipsClient
                         shipPositions[1, 1] = new GridPosition(PlayerGrid.GetPositionFromControl(control).Column, PlayerGrid.GetPositionFromControl(control).Row);
                         if (PlaceShip(ShipType.Cruiser) == false)
                         {
-                            MessageBox.Show("Invalid ship placement: " + ShipType.Cruiser + " Please try again.", "Invalid Placement", MessageBoxButtons.OK);
+                            MessageBox.Show(i18n.GetText("invalidPlacement", i18n.GetText("shipName2")), i18n.GetText("invalidPlacementTitle"), MessageBoxButtons.OK);
                             shipPositions[1, 0] = null;
                             shipPositions[1, 1] = null;
                         }
@@ -277,7 +394,7 @@ namespace BattleshipsClient
                                 pictureBox.Image = Properties.Resources.Ship;
                             }
                             btnCruiser.Enabled = false;
-                            btnCruiser.Text = "Placed!";
+                            btnCruiser.Text = i18n.GetText("shipPlaced");
                         }
                     }
                     break;
@@ -293,7 +410,7 @@ namespace BattleshipsClient
                         shipPositions[2, 1] = new GridPosition(PlayerGrid.GetPositionFromControl(control).Column, PlayerGrid.GetPositionFromControl(control).Row);
                         if (PlaceShip(ShipType.Submarine) == false)
                         {
-                            MessageBox.Show("Invalid ship placement: " + ShipType.Submarine + " Please try again.", "Invalid Placement", MessageBoxButtons.OK);
+                            MessageBox.Show(i18n.GetText("invalidPlacement", i18n.GetText("shipName3")), i18n.GetText("invalidPlacementTitle"), MessageBoxButtons.OK);
                             shipPositions[2, 0] = null;
                             shipPositions[2, 1] = null;
                         }
@@ -305,7 +422,7 @@ namespace BattleshipsClient
                                 pictureBox.Image = Properties.Resources.Ship;
                             }
                             btnSubmarine.Enabled = false;
-                            btnSubmarine.Text = "Placed!";
+                            btnSubmarine.Text = i18n.GetText("shipPlaced");
                         }
                     }
                     break;
@@ -321,7 +438,7 @@ namespace BattleshipsClient
                         shipPositions[3, 1] = new GridPosition(PlayerGrid.GetPositionFromControl(control).Column, PlayerGrid.GetPositionFromControl(control).Row);
                         if (PlaceShip(ShipType.Battleship) == false)
                         {
-                            MessageBox.Show("Invalid ship placement: " + ShipType.Battleship + " Please try again.", "Invalid Placement", MessageBoxButtons.OK);
+                            MessageBox.Show(i18n.GetText("invalidPlacement", i18n.GetText("shipName4")), i18n.GetText("invalidPlacementTitle"), MessageBoxButtons.OK);
                             shipPositions[3, 0] = null;
                             shipPositions[3, 1] = null;
                         }
@@ -333,7 +450,7 @@ namespace BattleshipsClient
                                 pictureBox.Image = Properties.Resources.Ship;
                             }
                             btnBattleship.Enabled = false;
-                            btnBattleship.Text = "Placed!";
+                            btnBattleship.Text = i18n.GetText("shipPlaced");
                         }
                     }
                     break;
@@ -349,7 +466,7 @@ namespace BattleshipsClient
                         shipPositions[4, 1] = new GridPosition(PlayerGrid.GetPositionFromControl(control).Column, PlayerGrid.GetPositionFromControl(control).Row);
                         if (PlaceShip(ShipType.Carrier) == false)
                         {
-                            MessageBox.Show("Invalid ship placement: " + ShipType.Carrier + " Please try again.", "Invalid Placement", MessageBoxButtons.OK);
+                            MessageBox.Show(i18n.GetText("invalidPlacement", i18n.GetText("shipName5")), i18n.GetText("invalidPlacementTitle"), MessageBoxButtons.OK);
                             shipPositions[4, 0] = null;
                             shipPositions[4, 1] = null;
                         }
@@ -361,7 +478,7 @@ namespace BattleshipsClient
                                 pictureBox.Image = Properties.Resources.Ship;
                             }
                             btnCarrier.Enabled = false;
-                            btnCarrier.Text = "Placed!";
+                            btnCarrier.Text = i18n.GetText("shipPlaced"); ;
                         }
                     }
                     break;
@@ -579,7 +696,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Destroyer)
             {
                 selectedShipType = ShipType.Destroyer;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 2 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName1"),"2")); ; });
             }
         }
 
@@ -588,7 +705,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Cruiser)
             {
                 selectedShipType = ShipType.Cruiser;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName2"),"3")); ; });
             }
         }
 
@@ -597,7 +714,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Submarine)
             {
                 selectedShipType = ShipType.Submarine;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 3 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName3"),"3")); ; });
             }
         }
 
@@ -606,7 +723,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Battleship)
             {
                 selectedShipType = ShipType.Battleship;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 4 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName4"),"4")); ; });
             }
         }
 
@@ -615,7 +732,7 @@ namespace BattleshipsClient
             if (selectedShipType != ShipType.Carrier)
             {
                 selectedShipType = ShipType.Carrier;
-                rtbLog.BeginInvoke((MethodInvoker)delegate () {  rtbLog.AppendText(selectedShipType + " selected" + Environment.NewLine + "Ship length: 5 grid squares" + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () {  rtbLog.AppendText(i18n.GetText("shipSelected", i18n.GetText("shipName5"),"5")); ; });
             }
         }
 
@@ -626,23 +743,23 @@ namespace BattleshipsClient
             //Re-enable the buttons
             //Destroyer
             btnDestroyer.Enabled = true;
-            btnDestroyer.Text = "Destroyer";
+            btnDestroyer.Text = i18n.GetText("shipName1");
             btnDestroyer.Visible = true;
             //Cruiser
             btnCruiser.Enabled = true;
-            btnCruiser.Text = "Cruiser";
+            btnCruiser.Text = i18n.GetText("shipName2"); 
             btnCruiser.Visible = true;
             //Submarine
             btnSubmarine.Enabled = true;
-            btnSubmarine.Text = "Submarine";
+            btnSubmarine.Text = i18n.GetText("shipName3"); 
             btnSubmarine.Visible = true;
             //Battleship
             btnBattleship.Enabled = true;
-            btnBattleship.Text = "Battleship";
+            btnBattleship.Text = i18n.GetText("shipName4");
             btnBattleship.Visible = true;
             //Carrier
             btnCarrier.Enabled = true;
-            btnCarrier.Text = "Carrier";
+            btnCarrier.Text = i18n.GetText("shipName5");
             btnCarrier.Visible = true;
 
             btnSubmit.Enabled = false;
@@ -677,7 +794,7 @@ namespace BattleshipsClient
             cmd.SenderPort = client.Port;
             cmd.SenderName = client.Username;
             client.SendCommand(cmd);
-            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Ship placement sent to server. Waiting for other player..." + Environment.NewLine); ; });
+            rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shipPlacementSend")); ; });
             //Submit Button
             btnSubmit.Enabled = false;
             btnSubmit.Visible = false;
@@ -702,7 +819,10 @@ namespace BattleshipsClient
             //Fire Button
             btnFire.Visible = true;
         }
-
+        private string GetShotHumanReadablePosition(int x, int y)
+        {
+            return (System.Convert.ToChar(0x41 + y).ToString() + " " + (x + 1).ToString());
+        }
         private void btnFire_Click(object sender, EventArgs e)
         {
             if (gridTarget.x > -1 && gridTarget.y > -1)
@@ -713,13 +833,21 @@ namespace BattleshipsClient
                 cmd.SenderName = client.Username;
                 cmd.SenderPort = client.Port;
                 client.SendCommand(cmd);
-                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText("Shot fired at: " + gridTarget.x + ',' + gridTarget.y + Environment.NewLine); ; });
+                rtbLog.BeginInvoke((MethodInvoker)delegate () { rtbLog.AppendText(i18n.GetText("shotAt", GetShotHumanReadablePosition(gridTarget.x,gridTarget.y))); ; });
+                btnFire.BackColor = System.Drawing.SystemColors.Control;
+                btnFire.ForeColor = System.Drawing.SystemColors.ControlText;
             }
         }
 
         private void BattleshipGameForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             client.CommandRecieved -= GameCommandRecieved;
+        }
+
+        private void checkBoxSound_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["EnabledSound"] = checkBoxSound.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }

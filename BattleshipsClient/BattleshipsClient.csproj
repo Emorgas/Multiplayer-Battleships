@@ -63,6 +63,7 @@
     <Compile Include="ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="i18n.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\WaterTarget.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FlightBomb.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FlightWater.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

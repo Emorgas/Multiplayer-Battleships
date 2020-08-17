@@ -38,12 +38,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblWins = new System.Windows.Forms.Label();
             this.lblLosses = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(308, 371);
+            this.btnSend.Location = new System.Drawing.Point(284, 348);
             this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(56, 28);
@@ -54,18 +56,18 @@
             // 
             // txtMessage
             // 
-            this.txtMessage.Location = new System.Drawing.Point(9, 376);
+            this.txtMessage.Location = new System.Drawing.Point(14, 321);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(2);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(295, 20);
+            this.txtMessage.Size = new System.Drawing.Size(326, 20);
             this.txtMessage.TabIndex = 1;
             // 
             // btnChallenge
             // 
-            this.btnChallenge.Location = new System.Drawing.Point(368, 371);
+            this.btnChallenge.Location = new System.Drawing.Point(401, 410);
             this.btnChallenge.Margin = new System.Windows.Forms.Padding(2);
             this.btnChallenge.Name = "btnChallenge";
-            this.btnChallenge.Size = new System.Drawing.Size(90, 28);
+            this.btnChallenge.Size = new System.Drawing.Size(106, 28);
             this.btnChallenge.TabIndex = 2;
             this.btnChallenge.Text = "Challenge!";
             this.btnChallenge.UseVisualStyleBackColor = true;
@@ -74,19 +76,19 @@
             // lstUsers
             // 
             this.lstUsers.FormattingEnabled = true;
-            this.lstUsers.Location = new System.Drawing.Point(368, 35);
+            this.lstUsers.Location = new System.Drawing.Point(401, 62);
             this.lstUsers.Margin = new System.Windows.Forms.Padding(2);
             this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(91, 329);
+            this.lstUsers.Size = new System.Drawing.Size(106, 329);
             this.lstUsers.TabIndex = 3;
             // 
             // rtbChat
             // 
-            this.rtbChat.Location = new System.Drawing.Point(9, 39);
+            this.rtbChat.Location = new System.Drawing.Point(14, 27);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(2);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
-            this.rtbChat.Size = new System.Drawing.Size(356, 325);
+            this.rtbChat.Size = new System.Drawing.Size(326, 271);
             this.rtbChat.TabIndex = 4;
             this.rtbChat.Text = "";
             // 
@@ -99,7 +101,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(467, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(531, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -120,7 +122,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(370, 9);
+            this.label1.Location = new System.Drawing.Point(398, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 6;
@@ -129,7 +131,7 @@
             // lblWins
             // 
             this.lblWins.AutoSize = true;
-            this.lblWins.Location = new System.Drawing.Point(12, 24);
+            this.lblWins.Location = new System.Drawing.Point(23, 34);
             this.lblWins.Name = "lblWins";
             this.lblWins.Size = new System.Drawing.Size(68, 13);
             this.lblWins.TabIndex = 7;
@@ -138,25 +140,35 @@
             // lblLosses
             // 
             this.lblLosses.AutoSize = true;
-            this.lblLosses.Location = new System.Drawing.Point(143, 24);
+            this.lblLosses.Location = new System.Drawing.Point(182, 34);
             this.lblLosses.Name = "lblLosses";
             this.lblLosses.Size = new System.Drawing.Size(77, 13);
             this.lblLosses.TabIndex = 8;
             this.lblLosses.Text = "Your Losses: 0";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rtbChat);
+            this.groupBox1.Controls.Add(this.txtMessage);
+            this.groupBox1.Controls.Add(this.btnSend);
+            this.groupBox1.Location = new System.Drawing.Point(12, 62);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(356, 385);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Chat";
+            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 409);
+            this.ClientSize = new System.Drawing.Size(531, 463);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblLosses);
             this.Controls.Add(this.lblWins);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.rtbChat);
             this.Controls.Add(this.lstUsers);
             this.Controls.Add(this.btnChallenge);
-            this.Controls.Add(this.txtMessage);
-            this.Controls.Add(this.btnSend);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
@@ -168,6 +180,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChatForm_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,5 +200,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblWins;
         private System.Windows.Forms.Label lblLosses;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
